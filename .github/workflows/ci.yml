@@ -53,6 +53,12 @@ jobs:
         run: |
           bandit -r backend/app -ll -ii
 
+      - name: Apply Database Schema Migrations
+        env:
+          DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@localhost:5432/opspilot
+        run: |
+          python scripts/run_migrations.py
+
       - name: Run Full Pytest Regression Suite
         env:
           DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@localhost:5432/opspilot
