@@ -104,31 +104,117 @@ terraform apply tfplan
 
 ---
 
-## 5. Automated CI/CD & Zero-Downtime Rollback
+## 5. Production AWS EC2 Architecture & Topology
 
-### GitHub Actions Workflows
-1. **Continuous Integration (`.github/workflows/ci.yml`)**:
-   - Executes flake8 linting and Bandit security AST scanner.
-   - Runs full 340+ pytest backend regression suite against PostgreSQL service container.
-   - Executes `npm run build` on frontend SPA.
-   - Builds backend and frontend Docker images for syntax and build verification.
+OpsPilot is currently deployed and active on AWS EC2 in `ap-south-1` (Mumbai):
 
-2. **Continuous Deployment (`.github/workflows/deploy.yml`)**:
-   - Authenticates to AWS using OpenID Connect (OIDC).
-   - Builds and tags Docker images with Git commit SHA and pushes to Amazon ECR.
-   - Executes database schema migrations via `scripts/run_migrations.py`.
-   - Records currently active task definition as rollback anchor.
-   - Updates ECS Fargate Service with zero-downtime rolling update.
-   - Executes automated smoke verification script: `scripts/deploy_verify.py`.
-   - **Automated Rollback:** If smoke verification fails, `scripts/rollback_ecs.py` is automatically invoked to revert the service to the previous stable revision.
+```text
+                                  Internet
+                                     │
+                     ┌───────────────┴───────────────┐
+                     │ Port 80 (HTTP) / Port 443 (TLS)│
+                     └───────────────┬───────────────┘
+                                     │
+                 ┌───────────────────▼───────────────────┐
+                 │       AWS EC2 c7i-flex.large          │
+                 │   (13.201.38.20 / ap-south-1)         │
+                 │                                       │
+                 │   ┌───────────────────────────────┐   │
+                 │   │     Nginx Reverse Proxy       │   │
+                 │   │ (Let's Encrypt TLS / Port 443)│   │
+                 │   └───┬───────────────────────┬───┘   │
+                 │       │ /                     │ /api/ │
+                 │   ┌───▼───────────────┐   ┌───▼───┴───┐
+                 │   │ opspilot-frontend │   │ opspilot- │
+                 │   │   (React Vite)    │   │  backend  │
+                 │   │     Port 80       │   │ Port 8000 │
+                 │   └───────────────────┘   └───┬───┬───┘
+                 │                               │   │
+                 │         ┌─────────────────────┘   │
+                 │         ▼                         ▼
+                 │   ┌───────────────┐        ┌──────────────┐
+                 │   │opspilot-db    │        │  opspilot-   │
+                 │   │(PostgreSQL 15)│        │otel-collector│
+                 │   └───────────────┘        └──────┬───────┘
+                 │                                   │
+                 │                     ┌─────────────┴─────────────┐
+                 │                     ▼                           ▼
+                 │              ┌──────────────┐            ┌──────────────┐
+                 │              │  prometheus  │            │   grafana    │
+                 │              │ (Port 9090)  │            │ (Port 3000)  │
+                 │              └──────────────┘            └──────────────┘
+                 └───────────────────────────────────────────────────────┘
+```
+
+### Running Services on Live Instance
+- **Backend API:** `http://13.201.38.20:8000/health`
+- **Frontend SPA:** `http://13.201.38.20/`
+- **Prometheus:** `http://13.201.38.20:9090/`
+- **Grafana:** `http://13.201.38.20:3000/`
 
 ---
 
-## 6. Disaster Recovery & Secrets Rotation
+## 6. Automated GitHub Actions → EC2 Continuous Deployment
 
-- **Database Snapshots:** RDS automated daily snapshots retained for 7 days.
-- **Secret Rotation:** App secrets stored in AWS Secrets Manager with KMS encryption.
-- **Rollback Runbook:** If rollback is needed manually:
-  ```bash
-  python scripts/rollback_ecs.py --cluster opspilot-production-cluster --service opspilot-production-service --target-task-def opspilot-production-app:PREVIOUS_REVISION
-  ```
+The `.github/workflows/ci.yml` pipeline includes the automated `deploy-ec2` job, which triggers automatically on pushes to `main` once all tests pass:
+
+1. **Lint & Security:** Flake8 and Bandit AST security scans.
+2. **Backend Regression:** All 435 pytest test suites executed with PostgreSQL service container.
+3. **Frontend Compilation:** Node.js 20 builds the production React Vite bundle.
+4. **Docker Container Builds:** Validates backend and frontend container buildability.
+5. **EC2 Deployment:** Authenticates via SSH, pulls `origin/main`, applies migrations, rebuilds containers, and validates `/health`.
+
+### Configuring GitHub Repository Secrets
+To connect your repository to the live EC2 instance, configure the following repository secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret Name | Value | Description |
+| :--- | :--- | :--- |
+| `EC2_HOST` | `13.201.38.20` | Public IPv4 address or Elastic IP of the EC2 instance. |
+| `EC2_USER` | `ubuntu` | SSH login username (default `ubuntu` for Ubuntu AMIs). |
+| `EC2_SSH_KEY` | `-----BEGIN OPENSSH PRIVATE KEY-----...` | Private key (`.pem`) used to launch the EC2 instance. |
+
+---
+
+## 7. HTTPS & Custom Domain Setup (Nginx + Let's Encrypt)
+
+To secure the EC2 instance with SSL/TLS and your custom domain:
+
+1. **DNS Record:** Create an `A` record pointing your domain (e.g. `opspilot.yourcompany.com`) to `13.201.38.20`.
+2. **Execute Automated SSL Setup:**
+   SSH into the instance and run the one-command setup script:
+   ```bash
+   ssh -i your-key.pem ubuntu@13.201.38.20
+   cd ~/opspilot
+   sudo bash infra/scripts/setup_ssl_ec2.sh opspilot.yourcompany.com admin@yourcompany.com
+   ```
+   This script:
+   - Installs Certbot and Nginx.
+   - Generates 2048-bit Diffie-Hellman parameters.
+   - Issues Let's Encrypt certificates.
+   - Deploys the production Nginx TLS configuration (`infra/nginx/nginx-ssl.conf`) with HSTS, modern ciphers, and rate limiting.
+   - Configures automatic certificate renewal.
+
+---
+
+## 8. AWS Golden Path End-to-End Verification
+
+OpsPilot includes an automated 9-step production verification suite in `scripts/aws_golden_path_verify.py`.
+
+### Execution Command
+```bash
+python scripts/aws_golden_path_verify.py --url http://13.201.38.20
+```
+
+### Verification Checklist & Results
+| Step | Pipeline Component | Target Endpoint | Status |
+| :--- | :--- | :--- | :--- |
+| 1 | System Health Probe | `GET /health` | **PASS** |
+| 2 | Operator Authentication | `POST /api/v1/auth/login` | **PASS** |
+| 3 | Operator Persona & RBAC | `GET /api/v1/auth/me` | **PASS** |
+| 4 | Incident Pipeline | `GET /api/v1/incidents` | **PASS** |
+| 5 | Telemetry Timeline | `GET /api/v1/incidents/{id}/events` | **PASS** |
+| 6 | Conversational AI Agent | `POST /api/v1/chat` | **PASS** (1049 chars, 4 tools dispatched) |
+| 7 | RAG Knowledge Catalog | `GET /api/v1/knowledge/documents` | **PASS** (4 runbooks indexed) |
+| 8 | Operational Dashboard | `GET /api/v1/dashboard/summary` | **PASS** |
+| 9 | Immutable Audit Trail | `GET /api/v1/audit-logs` | **PASS** |
+
