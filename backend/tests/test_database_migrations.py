@@ -534,3 +534,75 @@ def test_chat_messages_table_exists(db_session):
     ]
     for col_name in expected_cols:
         assert col_name in columns, f"Missing column: {col_name}"
+
+
+def test_app_logs_table_exists(db_session):
+    inspector = inspect(db_session.connection())
+    tables = inspector.get_table_names(schema="core")
+    assert "app_logs" in tables
+
+    columns = {
+        col["name"]: col
+        for col in inspector.get_columns("app_logs", schema="core")
+    }
+    expected_cols = [
+        "log_id",
+        "service_id",
+        "service_name",
+        "level",
+        "message",
+        "logger_name",
+        "trace_id",
+        "span_id",
+        "host",
+        "environment",
+        "extra",
+        "logged_at",
+    ]
+    for col_name in expected_cols:
+        assert col_name in columns, f"Missing column: {col_name}"
+
+    # Verify level CHECK constraint allows valid values
+    db_session.execute(
+        text(
+            """
+            INSERT INTO core.app_logs (service_name, level, message)
+            VALUES ('test-svc', 'ERROR', 'constraint smoke test')
+            ON CONFLICT DO NOTHING;
+            """
+        )
+    )
+
+
+def test_service_metrics_table_exists(db_session):
+    inspector = inspect(db_session.connection())
+    tables = inspector.get_table_names(schema="core")
+    assert "service_metrics" in tables
+
+    columns = {
+        col["name"]: col
+        for col in inspector.get_columns("service_metrics", schema="core")
+    }
+    expected_cols = [
+        "metric_id",
+        "service_id",
+        "service_name",
+        "instance_id",
+        "environment",
+        "metric_name",
+        "metric_value",
+        "unit",
+        "dimensions",
+        "recorded_at",
+    ]
+    for col_name in expected_cols:
+        assert col_name in columns, f"Missing column: {col_name}"
+
+
+def test_migration_files_include_022_and_023():
+    from app.db.migrator import get_migration_files
+
+    files = get_migration_files()
+    filenames = [f.name for f in files]
+    assert "022_app_logs.sql" in filenames, "Migration 022_app_logs.sql is missing"
+    assert "023_service_metrics.sql" in filenames, "Migration 023_service_metrics.sql is missing"

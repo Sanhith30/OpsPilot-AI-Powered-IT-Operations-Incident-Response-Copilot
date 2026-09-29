@@ -60,11 +60,10 @@ class AppLogRepository:
 
         if keyword:
             # Use Postgres full-text search on message column
-            q = q.filter(
-                AppLog.message.op("@@")(
-                    text(f"to_tsquery('english', :kw)")
-                ).params(kw=self._to_tsquery_safe(keyword))
+            tsquery_expr = text("to_tsquery('english', :kw)").bindparams(
+                kw=self._to_tsquery_safe(keyword)
             )
+            q = q.filter(AppLog.message.op("@@")(tsquery_expr))
 
         return q.order_by(AppLog.logged_at.desc()).limit(limit).all()
 
