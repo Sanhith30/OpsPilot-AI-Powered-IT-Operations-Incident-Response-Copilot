@@ -1,46 +1,10 @@
-<div align="center">
+# OpsPilot
 
-#  OpsPilot
-### AI-Powered IT Operations & Incident Response Copilot
-**Forward Deployed Engineer Architecture • LangGraph Multi-Agent Orchestration • Grounded RAG • Safe Human-in-the-Loop Remediation • Immutable Auditing**
+## AI-Powered IT Operations & Incident Response Copilot
 
-[![OpsPilot CI](https://github.com/Sanhith30/OpsPilot-AI-Powered-IT-Operations-Incident-Response-Copilot/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Sanhith30/OpsPilot-AI-Powered-IT-Operations-Incident-Response-Copilot/actions/workflows/ci.yml)
-[![OpsPilot CD](https://github.com/Sanhith30/OpsPilot-AI-Powered-IT-Operations-Incident-Response-Copilot/actions/workflows/deploy-ec2.yml/badge.svg?branch=main)](https://github.com/Sanhith30/OpsPilot-AI-Powered-IT-Operations-Incident-Response-Copilot/actions/workflows/deploy-ec2.yml)
-[![Tests Passing](https://img.shields.io/badge/Tests-443%20Passed%20(100%25)-success?logo=pytest)](docs/TESTING_EVALUATION.md)
-[![Live AWS EC2](https://img.shields.io/badge/AWS%20EC2-13.201.38.20%20(ap--south--1)-FF9900?logo=amazon-aws)](http://13.201.38.20)
-[![Python 3.13](https://img.shields.io/badge/Python-3.13-blue?logo=python)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://react.dev/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql)](https://www.postgresql.org/)
-[![Docker](https://img.shields.io/badge/Docker-Compose%20(6%20Containers)-2496ED?logo=docker)](https://www.docker.com/)
-
-</div>
+> A secure, evidence-driven AI operations system that helps IT engineers investigate incidents across structured operational data, application logs, telemetry, deployment history, runbooks, and incident tickets, while keeping humans in control of high-impact actions.
 
 ---
-
-##  Live AWS Production Deployment & Access
-
-OpsPilot is actively deployed on **AWS EC2** in `ap-south-1` (Mumbai) running a multi-container Docker Compose stack:
-
-| Component | Live Endpoint | Description |
-| :--- | :--- | :--- |
-| **Operations Dashboard** | [http://13.201.38.20/](http://13.201.38.20/) | React Vite SPA with real-time incident triaging & persona switching |
-| **Backend REST API** | [http://13.201.38.20/health](http://13.201.38.20/health) | FastAPI core engine with health probes & Swagger docs |
-| **Grafana Dashboards** | [http://13.201.38.20:3000/](http://13.201.38.20:3000/) | System metrics & service latency dashboards (`admin` / `admin`) |
-| **Prometheus Server** | [http://13.201.38.20:9090/](http://13.201.38.20:9090/) | Time-series metric collection and alert query engine |
-| **OpenTelemetry Collector**| `http://13.201.38.20:4318/` | OTLP HTTP/gRPC receiver for distributed traces & service logs |
-
-### Demonstration Personas & Credentials
-
-| Persona | Role | Email | Password | Permissions Scope |
-| :--- | :--- | :--- | :--- | :--- |
-| **Arun Kumar** | L1 Triage Operator | `arun@opspilot.local` | `OpsPilot@123` | View incidents, search runbooks, view metrics |
-| **Priya Sharma** | L2 Systems Engineer | `priya@opspilot.local` | `OpsPilot@123` | Trigger AI investigations, request remediation |
-| **Rahul Verma** | Incident Manager | `rahul@opspilot.local` | `OpsPilot@123` | Approve/reject remediations, manage lifecycle |
-| **Meena Rao** | Operations Admin | `meena@opspilot.local` | `OpsPilot@123` | Role management, user access, full system oversight |
-
----
-
 
 ## Table of Contents
 
@@ -2079,7 +2043,7 @@ OpenTelemetry integration       4 / 4 passed
 ML independent validation      4 / 4 passed
 Tool evaluation                 3 / 3 passed
 Deployment infrastructure       9 / 9 passed
-Full backend regression       443 / 443 passed (100% green)
+Full backend regression       432 / 432 passed
 ```
 
 The CI/CD pipeline also reached a successful run after the deployment migration issues were resolved, covering the automated path from repository change to EC2 deployment.
@@ -2675,14 +2639,12 @@ OTel integration            4/4 passed
 ML validation               4/4 passed
 Tool evaluation             3/3 passed
 Deployment infra            9/9 passed
-Migration & Idempotency    25/25 passed
-Backend regression        443/443 passed (100% green)
-AWS Live Golden Path        9/9 passed (http://13.201.38.20)
+Backend regression        432/432 passed
 ```
 
 ## Current deployment state
 
-The GitHub-to-EC2 continuous deployment workflow (OpsPilot CD #8) is 100% green, having resolved deployment-time issues involving Docker permissions and migration/database-connection handling via discrete connection arguments and automated schema baselining.
+The GitHub-to-EC2 continuous deployment workflow has reached a successful state after resolving deployment-time issues involving Docker permissions and migration/database-connection handling.
 
 ---
 
