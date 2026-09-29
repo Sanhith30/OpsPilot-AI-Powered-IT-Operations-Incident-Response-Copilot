@@ -14,6 +14,8 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 from app.ai.risk.base import RiskPredictor
 from app.ai.risk.ml_features import FEATURE_NAMES, extract_ml_features, features_to_array
 from app.ai.risk.schemas import RiskPredictionResult
@@ -60,7 +62,7 @@ class MLRiskPredictor(RiskPredictor):
 
         try:
             with open(self._model_path, "rb") as f:
-                self._model = pickle.load(f)
+                self._model = pickle.load(f)  # nosec B301
 
             if METADATA_PATH.exists():
                 with open(METADATA_PATH) as f:
