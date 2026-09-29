@@ -25,19 +25,20 @@ jobs:
           script_stop: true
           script: |
             echo "=== OpsPilot AWS EC2 Automated Deployment ==="
-            cd ~/opspilot || cd /home/ubuntu/opspilot
+            cd ~/opspilot
             echo "Pulling latest code from origin/main..."
             git fetch origin main
             git reset --hard origin/main
 
-            echo "Applying database schema migrations..."
-            docker compose exec -T backend python scripts/run_migrations.py || python3 scripts/run_migrations.py || true
-
             echo "Rebuilding and restarting application containers..."
-            docker compose down || true
-            docker compose up -d --build
+            sudo docker compose up -d --build
+
+            echo "Applying database schema migrations..."
+            sudo docker compose exec -T backend python scripts/run_migrations.py
 
             echo "Verifying application health..."
-            sleep 5
-            curl --fail --retry 5 --retry-delay 3 http://localhost:8000/health || curl --fail http://localhost/health || true
+            sleep 10
+            curl --fail --retry 5 --retry-delay 3 http://localhost:8000/health
+            curl --fail --retry 5 --retry-delay 3 http://localhost/
             echo "=== Deployment to AWS EC2 completed successfully! ==="
+
