@@ -45,7 +45,7 @@ CREATE SCHEMA IF NOT EXISTS core;
 -- Name: set_updated_at(); Type: FUNCTION; Schema: core; Owner: -
 --
 
-CREATE FUNCTION core.set_updated_at() RETURNS trigger
+CREATE OR REPLACE FUNCTION core.set_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN

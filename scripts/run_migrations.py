@@ -113,6 +113,74 @@ def get_db_connection_params(env: dict[str, str] | None = None) -> dict[str, Any
     }
 
 
+def baseline_existing_schema(cur: Any) -> set[str]:
+    """
+    Detect tables that already exist in the database from prior initializations
+    (e.g., docker-entrypoint-initdb.d) and register their corresponding migrations
+    in core.schema_migrations so they are safely skipped and not re-executed.
+    """
+    cur.execute(
+        """
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'core';
+        """
+    )
+    existing_tables = {row[0] for row in cur.fetchall()}
+    baselined: set[str] = set()
+
+    # If core schema tables like incidents, users, or audit_logs already exist, 001 and 002 are already applied
+    if "incidents" in existing_tables or "users" in existing_tables or "audit_logs" in existing_tables:
+        baselined.add("001_core_schema.sql")
+        baselined.add("002_core_seed_data.sql")
+
+    if "knowledge_documents" in existing_tables:
+        baselined.add("017_knowledge_base.sql")
+
+    if "investigation_evidence" in existing_tables:
+        try:
+            cur.execute(
+                """
+                SELECT pg_get_constraintdef(c.oid)
+                FROM pg_constraint c
+                JOIN pg_namespace n ON n.oid = c.connamespace
+                WHERE n.nspname = 'core' AND c.conname = 'ck_investigation_evidence_type';
+                """
+            )
+            row = cur.fetchone()
+            if row and "KNOWLEDGE_BASE" in str(row[0]):
+                baselined.add("018_investigation_evidence_knowledge_base.sql")
+        except Exception:
+            pass
+
+    if "incident_intelligence" in existing_tables:
+        baselined.add("019_incident_intelligence.sql")
+
+    if "remediation_actions" in existing_tables:
+        baselined.add("020_remediation_actions.sql")
+
+    if "chat_sessions" in existing_tables:
+        baselined.add("021_chat_persistence.sql")
+
+    if "app_logs" in existing_tables:
+        baselined.add("022_app_logs.sql")
+
+    if "service_metrics" in existing_tables:
+        baselined.add("023_service_metrics.sql")
+
+    for migration_name in sorted(baselined):
+        cur.execute(
+            """
+            INSERT INTO core.schema_migrations (migration_name)
+            VALUES (%s)
+            ON CONFLICT (migration_name) DO NOTHING;
+            """,
+            (migration_name,),
+        )
+
+    return baselined
+
+
 def run_migrations(migrations_dir: Path | None = None) -> None:
     conn_params = get_db_connection_params()
 
@@ -160,6 +228,11 @@ def run_migrations(migrations_dir: Path | None = None) -> None:
                 );
                 """
             )
+            # Baseline any pre-existing database tables to ensure idempotency
+            baselined = baseline_existing_schema(cur)
+            if baselined:
+                print(f"[*] Baselined {len(baselined)} pre-existing migration(s): {', '.join(sorted(baselined))}")
+
             cur.execute(
                 "SELECT migration_name FROM core.schema_migrations ORDER BY migration_name;"
             )
