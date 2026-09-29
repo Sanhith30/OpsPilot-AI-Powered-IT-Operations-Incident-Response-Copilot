@@ -76,7 +76,9 @@
 
 html, body {
   width: 100%;
+  max-width: 100vw;
   min-height: 100%;
+  overflow-x: hidden;
   background-color: var(--bg-deep);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -520,4 +522,33 @@ table.data-table tr:hover td {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Responsive Mobile Navigation & Layout Rules (375px - 860px)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+  .engine-status {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: 12px 12px !important;
+  }
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .card {
+    padding: 14px 16px !important;
+  }
 }
