@@ -53,6 +53,9 @@ services:
       APP_ENV: ${APP_ENV:-production}
     ports:
       - "127.0.0.1:8000:8000"
+    volumes:
+      - ./scripts:/app/scripts:ro
+      - ./db:/app/db:ro
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 15s
@@ -61,6 +64,7 @@ services:
       start_period: 15s
     networks:
       - opspilot-network
+
 
   # ============================================================================
   # Frontend UI Service (React + Vite + Nginx)

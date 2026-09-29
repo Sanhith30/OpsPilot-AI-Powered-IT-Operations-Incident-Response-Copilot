@@ -47,11 +47,14 @@ COPY --from=builder /build/wheels /wheels
 RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* && \
     rm -rf /wheels
 
-# Copy backend application code
+# Copy backend application code, operational scripts, and database migrations
 COPY backend /app/backend
+COPY scripts /app/scripts
+COPY db /app/db
 
 # Copy built frontend assets so FastAPI can serve /ui out of the box
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
+
 
 # Create dedicated non-root user (security hardening)
 RUN groupadd -g 10001 opspilot && \
