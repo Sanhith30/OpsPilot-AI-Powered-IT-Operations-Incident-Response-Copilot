@@ -18,8 +18,12 @@ def _auth_headers(user_id: int):
 
 def test_frontend_dist_bundle_exists():
     """Validates that the production React + Vite bundle is compiled."""
-    dist_dir = Path("c:/OpsPilot/frontend/dist")
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    dist_dir = repo_root / "frontend" / "dist"
+    if not dist_dir.exists():
+        dist_dir = Path("frontend/dist").resolve()
     assert dist_dir.exists(), "frontend/dist directory must exist"
+
 
     index_html = dist_dir / "index.html"
     assert index_html.exists(), "dist/index.html must be present"

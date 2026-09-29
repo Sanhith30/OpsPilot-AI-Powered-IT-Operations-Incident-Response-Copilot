@@ -24,6 +24,8 @@ jobs:
       LLM_PROVIDER: mock
       EMBEDDING_PROVIDER: mock
       EMBEDDING_DIMENSIONS: "768"
+      VECTOR_STORE_PROVIDER: mock
+
 
     services:
       postgres:

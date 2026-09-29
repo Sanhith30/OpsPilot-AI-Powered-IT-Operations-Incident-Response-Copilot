@@ -177,9 +177,29 @@ def test_factories(monkeypatch):
 
     monkeypatch.setattr("app.core.config.settings.embedding_provider", "mock")
     monkeypatch.setattr("app.core.config.settings.embedding_dimensions", 768)
+    monkeypatch.setattr("app.core.config.settings.vector_store_provider", "mock")
     mock_provider = create_embedding_provider()
     from app.ai.rag.embeddings.mock import MockEmbeddingProvider
+    from app.ai.rag.vectorstore.mock import MockVectorStore
     assert isinstance(mock_provider, MockEmbeddingProvider)
     assert mock_provider.dimension == 768
     vec = mock_provider.embed_query("test query")
     assert len(vec) == 768
+
+    mock_store = create_vector_store("mock")
+    assert isinstance(mock_store, MockVectorStore)
+    mock_store.add_chunks([
+        KnowledgeChunk(
+            chunk_id="chk-mock-1",
+            document_id="doc-mock-1",
+            content="Kubernetes pod restart runbook guide",
+            chunk_index=0,
+            metadata={"source": "ops-runbook"},
+        )
+    ])
+    search_hits = mock_store.search("pod restart", top_k=3)
+    assert len(search_hits) == 1
+    assert search_hits[0].chunk_id == "chk-mock-1"
+    mock_store.delete_document("doc-mock-1")
+    assert len(mock_store.search("pod restart")) == 0
+

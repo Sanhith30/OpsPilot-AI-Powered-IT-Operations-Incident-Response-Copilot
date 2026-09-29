@@ -31,11 +31,13 @@ class Settings(BaseSettings):
     embedding_provider: str = "gemini"
     embedding_model: str = "gemini-embedding-2"
     embedding_dimensions: int = 1536
+    vector_store_provider: str = "pinecone"
     pinecone_api_key: str | None = None
     pinecone_index_name: str = "opspilot-knowledge"
     pinecone_namespace: str = "opspilot"
     rag_top_k: int = 5
     rag_score_threshold: float = 0.65
+
 
     model_config = SettingsConfigDict(
         env_file=(".env", "backend/.env"),
