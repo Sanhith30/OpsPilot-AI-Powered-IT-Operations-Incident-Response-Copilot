@@ -20,6 +20,20 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'opspilot_owner') THEN
+        CREATE ROLE opspilot_owner;
+    END IF;
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'opspilot_agent_ro') THEN
+        CREATE ROLE opspilot_agent_ro;
+    END IF;
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'opspilot_app') THEN
+        CREATE ROLE opspilot_app;
+    END IF;
+END
+$$;
+
 --
 -- Name: core; Type: SCHEMA; Schema: -; Owner: -
 --
