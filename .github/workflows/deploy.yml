@@ -1,8 +1,6 @@
 name: OpsPilot CD - AWS ECS Deployment & Automated Rollback
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       environment:
