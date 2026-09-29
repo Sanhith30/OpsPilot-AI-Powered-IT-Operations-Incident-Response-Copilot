@@ -193,11 +193,10 @@ input, select, textarea {
 }
 
 .glass-panel {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Headers & Headings */
@@ -299,9 +298,12 @@ input, select, textarea {
   box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
 }
 .btn-primary:hover:not(:disabled) {
-  opacity: 0.92;
+  filter: brightness(1.08);
   box-shadow: 0 4px 16px rgba(0, 242, 254, 0.45);
   transform: translateY(-1px);
+}
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-success {
@@ -309,8 +311,12 @@ input, select, textarea {
   color: #080C14;
 }
 .btn-success:hover:not(:disabled) {
-  opacity: 0.92;
+  filter: brightness(1.08);
   box-shadow: 0 2px 12px var(--status-healthy-glow);
+  transform: translateY(-1px);
+}
+.btn-success:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-danger {
@@ -318,8 +324,12 @@ input, select, textarea {
   color: #FFFFFF;
 }
 .btn-danger:hover:not(:disabled) {
-  opacity: 0.92;
+  filter: brightness(1.1);
   box-shadow: 0 2px 12px var(--status-critical-glow);
+  transform: translateY(-1px);
+}
+.btn-danger:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-secondary {
@@ -452,8 +462,7 @@ table.data-table tr:hover td {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(3, 7, 18, 0.75);
-  backdrop-filter: blur(6px);
+  background: rgba(3, 7, 18, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -550,5 +559,77 @@ table.data-table tr:hover td {
   }
   .card {
     padding: 14px 16px !important;
+  }
+}
+
+/* ==========================================================================
+   Accessibility: Skip Link & Focus Styles
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 10px 18px;
+  background: var(--accent-cyan);
+  color: #080C14;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #080C14;
+  outline-offset: 2px;
+}
+
+/* Visible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove browser default outline when mouse is used */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Main content landmark for skip-link target */
+#main-content {
+  scroll-margin-top: 72px;
+}
+
+/* ==========================================================================
+   Toast Animation
+   ========================================================================== */
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+@media print {
+  header, footer, .cookie-banner, .modal-backdrop {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+  .card {
+    border: 1px solid #ccc;
+    box-shadow: none;
   }
 }

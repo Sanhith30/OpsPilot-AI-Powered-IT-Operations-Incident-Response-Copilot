@@ -3,7 +3,7 @@
  */
 
 export function formatDate(isoString) {
-  if (!isoString) return '—';
+  if (!isoString) return '-';
   try {
     const d = new Date(isoString);
     return d.toLocaleString('en-US', {
@@ -20,7 +20,7 @@ export function formatDate(isoString) {
 }
 
 export function formatRelativeTime(isoString) {
-  if (!isoString) return '—';
+  if (!isoString) return '-';
   try {
     const d = new Date(isoString);
     const diffMs = Date.now() - d.getTime();

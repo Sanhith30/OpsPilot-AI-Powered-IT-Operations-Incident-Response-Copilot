@@ -5,12 +5,12 @@ export function Navbar({ activeTab, onSelectTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'chat', label: 'Ask Copilot', icon: '💬', badge: 'AI' },
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'incidents', label: 'Incidents & Triage', icon: '🚨' },
-    { id: 'remediations', label: 'Remediations', icon: '⚡' },
-    { id: 'knowledge', label: 'Knowledge (RAG)', icon: '📚' },
-    { id: 'audit', label: 'Audit & Telemetry', icon: '🛡️' },
+    { id: 'chat',         label: 'Ask Copilot',       icon: NavIconChat },
+    { id: 'dashboard',   label: 'Dashboard',          icon: NavIconDashboard },
+    { id: 'incidents',   label: 'Incidents & Triage', icon: NavIconIncidents },
+    { id: 'remediations',label: 'Remediations',       icon: NavIconRemediation },
+    { id: 'knowledge',   label: 'Knowledge (RAG)',    icon: NavIconKnowledge },
+    { id: 'audit',       label: 'Audit & Telemetry',  icon: NavIconAudit },
   ];
 
   const handleNavClick = (id) => {
@@ -20,6 +20,7 @@ export function Navbar({ activeTab, onSelectTab }) {
 
   return (
     <header
+      role="banner"
       style={{
         backgroundColor: 'var(--bg-surface)',
         borderBottom: '1px solid var(--border-subtle)',
@@ -40,14 +41,14 @@ export function Navbar({ activeTab, onSelectTab }) {
           gap: '16px',
         }}
       >
-        {/* Brand Logo & Title */}
+        {/* Brand Logo - clickable to dashboard */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div
             onClick={() => onSelectTab('dashboard')}
             role="button"
             tabIndex={0}
-            aria-label="OpsPilot Home"
-            onKeyDown={(e) => e.key === 'Enter' && onSelectTab('dashboard')}
+            aria-label="OpsPilot Home - go to Operations Dashboard"
+            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelectTab('dashboard')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -66,9 +67,10 @@ export function Navbar({ activeTab, onSelectTab }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#080C14',
+                flexShrink: 0,
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                 <path d="M2 12h20" />
@@ -101,13 +103,16 @@ export function Navbar({ activeTab, onSelectTab }) {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <nav className="desktop-nav" aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
+              const Icon = item.icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
+                  aria-current={isActive ? 'page' : undefined}
+                  aria-label={item.label}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -123,32 +128,19 @@ export function Navbar({ activeTab, onSelectTab }) {
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  <span aria-hidden="true">{item.icon}</span>
+                  <Icon size={14} />
                   <span>{item.label}</span>
-                  {item.badge && (
-                    <span
-                      style={{
-                        fontSize: '9px',
-                        fontWeight: 700,
-                        padding: '1px 4px',
-                        borderRadius: '3px',
-                        backgroundColor: 'var(--accent-cyan)',
-                        color: '#080C14',
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Right Controls: Engine Health, Persona Switcher & Mobile Toggle */}
+        {/* Right Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             className="engine-status"
+            aria-label="API connection status: connected"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -162,12 +154,8 @@ export function Navbar({ activeTab, onSelectTab }) {
             }}
           >
             <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--status-healthy)',
-              }}
+              aria-hidden="true"
+              style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--status-healthy)', flexShrink: 0 }}
             />
             <span style={{ fontWeight: 600 }}>FastAPI Connected</span>
           </div>
@@ -178,7 +166,9 @@ export function Navbar({ activeTab, onSelectTab }) {
           <button
             className="mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-drawer"
             style={{
               background: 'transparent',
               border: '1px solid var(--border-subtle)',
@@ -191,7 +181,7 @@ export function Navbar({ activeTab, onSelectTab }) {
               justifyContent: 'center',
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {mobileMenuOpen ? (
                 <path d="M18 6L6 18M6 6l12 12" />
               ) : (
@@ -205,7 +195,9 @@ export function Navbar({ activeTab, onSelectTab }) {
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div
-          className="mobile-drawer"
+          id="mobile-nav-drawer"
+          role="navigation"
+          aria-label="Mobile navigation"
           style={{
             backgroundColor: 'var(--bg-surface)',
             borderTop: '1px solid var(--border-subtle)',
@@ -217,10 +209,12 @@ export function Navbar({ activeTab, onSelectTab }) {
         >
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
+            const Icon = item.icon;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
+                aria-current={isActive ? 'page' : undefined}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -236,7 +230,7 @@ export function Navbar({ activeTab, onSelectTab }) {
                   cursor: 'pointer',
                 }}
               >
-                <span aria-hidden="true">{item.icon}</span>
+                <Icon size={16} />
                 <span>{item.label}</span>
               </button>
             );
@@ -244,5 +238,53 @@ export function Navbar({ activeTab, onSelectTab }) {
         </div>
       )}
     </header>
+  );
+}
+
+/* ── Inline SVG icon components (no external library dependency) ── */
+function NavIconChat({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+function NavIconDashboard({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+    </svg>
+  );
+}
+function NavIconIncidents({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+  );
+}
+function NavIconRemediation({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+function NavIconKnowledge({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+function NavIconAudit({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
   );
 }

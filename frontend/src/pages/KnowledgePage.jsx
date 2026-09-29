@@ -84,7 +84,7 @@ export function KnowledgePage() {
             }}
           />
           <button className="btn btn-primary" type="submit" disabled={searching}>
-            {searching ? <><span className="spinner" /> Searching...</> : '🔍 Semantic Search'}
+            {searching ? <><span className="spinner" /> Searching...</> : 'Semantic Search'}
           </button>
         </form>
 
@@ -96,7 +96,7 @@ export function KnowledgePage() {
                 Top Ranked Chunks ({searchResults.chunks?.length || 0})
               </span>
               <button className="btn btn-ghost" onClick={() => setSearchResults(null)} style={{ fontSize: '11px' }}>
-                Clear Results ✕
+                Clear Results
               </button>
             </div>
 

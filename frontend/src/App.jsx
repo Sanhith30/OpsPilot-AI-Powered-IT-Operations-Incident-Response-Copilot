@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { MainLayout } from './layouts/MainLayout';
@@ -10,6 +10,7 @@ import { KnowledgePage } from './pages/KnowledgePage';
 import { AuditPage } from './pages/AuditPage';
 import { ChatPage } from './pages/ChatPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { useEffect } from 'react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState('chat');
@@ -18,7 +19,7 @@ export function App() {
   // Update dynamic page title on tab changes
   useEffect(() => {
     const titles = {
-      chat: 'Ask Copilot — Autonomous Multi-Tool AI | OpsPilot',
+      chat: 'Ask Copilot - Multi-Tool Investigation | OpsPilot',
       dashboard: 'Operations Dashboard & Fleet KPIs | OpsPilot',
       incidents: 'Incidents & Operational Triage | OpsPilot',
       'incident-detail': `Incident #${selectedIncidentId} Root Cause & Timeline | OpsPilot`,
@@ -26,7 +27,7 @@ export function App() {
       knowledge: 'Operational Runbooks & RAG Knowledge Base | OpsPilot',
       audit: 'Immutable Audit Trail & OpenTelemetry | OpsPilot',
     };
-    document.title = titles[activeTab] || 'OpsPilot — Autonomous SRE Copilot';
+    document.title = titles[activeTab] || 'OpsPilot - Enterprise SRE Copilot';
   }, [activeTab, selectedIncidentId]);
 
   const handleSelectIncident = (id) => {

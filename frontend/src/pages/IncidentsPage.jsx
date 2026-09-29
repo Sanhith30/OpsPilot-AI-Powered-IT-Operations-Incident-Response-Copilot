@@ -54,7 +54,7 @@ export function IncidentsPage({ onSelectIncident }) {
           </p>
         </div>
         <button className="btn btn-secondary" onClick={loadIncidents}>
-          🔄 Refresh
+          Refresh
         </button>
       </div>
 

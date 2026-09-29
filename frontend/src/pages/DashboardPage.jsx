@@ -69,7 +69,7 @@ export function DashboardPage({ onNavigateToIncident, onNavigateToTab }) {
           </p>
         </div>
         <button className="btn btn-secondary" onClick={fetchSummary} title="Refresh real data">
-          <span>🔄</span> Refresh
+          Refresh
         </button>
       </div>
 
@@ -308,12 +308,23 @@ export function DashboardPage({ onNavigateToIncident, onNavigateToTab }) {
                     fontSize: '12px',
                   }}
                 >
-                  <span style={{ fontSize: '14px' }}>
-                    {al.type === 'DEPLOYMENT_DETECTED' ? '🚀' :
-                     al.type === 'METRIC_THRESHOLD_EXCEEDED' ? '📈' :
-                     al.type === 'LOG_ANOMALY_DETECTED' ? '🔍' :
-                     al.type === 'MITIGATION_APPLIED' ? '🛡️' : '🚨'}
-                  </span>
+                  <span
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      marginTop: '4px',
+                      backgroundColor:
+                        al.type === 'MITIGATION_APPLIED'
+                          ? 'var(--status-healthy)'
+                          : al.type === 'DEPLOYMENT_DETECTED'
+                          ? 'var(--accent-cyan)'
+                          : al.type === 'METRIC_THRESHOLD_EXCEEDED'
+                          ? 'var(--status-warning)'
+                          : 'var(--status-critical)',
+                    }}
+                    aria-hidden="true"
+                  />
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
                       <strong style={{ color: 'var(--text-highlight)', fontSize: '11px' }}>{al.type}</strong>

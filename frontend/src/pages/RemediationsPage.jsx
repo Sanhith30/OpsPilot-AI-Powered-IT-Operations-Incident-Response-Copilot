@@ -70,8 +70,20 @@ export function RemediationsPage({ onNavigateToIncident }) {
     });
   };
 
+  const [honeypotValue, setHoneypotValue] = useState('');
+
   const handleConfirmReview = async () => {
+    // Bot / spam protection honeypot
+    if (honeypotValue) {
+      addToast('Automated bot submission detected and rejected.', 'error');
+      return;
+    }
+
     const { remediationId, decision, comment } = reviewModal;
+    if (!comment || comment.trim().length === 0) {
+      addToast('Validation Error: A rationale comment is required for audit trail compliance.', 'warning');
+      return;
+    }
     setReviewModal((prev) => ({ ...prev, submitting: true }));
 
     try {
@@ -181,7 +193,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
             ))}
           </select>
           <button className="btn btn-secondary" onClick={loadData}>
-            🔄 Refresh
+            Refresh
           </button>
         </div>
       </div>
@@ -199,7 +211,11 @@ export function RemediationsPage({ onNavigateToIncident }) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '16px' }}>🛡️</span>
+          <span style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center' }} aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </span>
           <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             Logged in as <strong>{activePersona.name} ({activePersona.role})</strong>.
             {hasPermission('ACTION_APPROVE') ? (
@@ -284,21 +300,21 @@ export function RemediationsPage({ onNavigateToIncident }) {
                           disabled={!hasPermission('ACTION_APPROVE')}
                           title={!hasPermission('ACTION_APPROVE') ? 'Requires ACTION_APPROVE permission (Manager/Admin)' : 'Approve remediation'}
                         >
-                          ✓ Approve Action
+                          Approve Action
                         </button>
                         <button
                           className="btn btn-danger"
                           onClick={() => handleOpenReview(rem.remediation_id, 'REJECT')}
                           disabled={!hasPermission('ACTION_APPROVE')}
                         >
-                          ✕ Reject
+                          Reject
                         </button>
                         <button
                           className="btn btn-secondary"
                           onClick={() => handleOpenReview(rem.remediation_id, 'REQUEST_MORE_INFO')}
                           disabled={!hasPermission('ACTION_APPROVE')}
                         >
-                          ? More Info
+                          More Info
                         </button>
                       </>
                     )}
@@ -320,7 +336,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
                           disabled={isExecuting || !hasPermission('ACTION_APPROVE')}
                           title={!hasPermission('ACTION_APPROVE') ? 'Requires ACTION_APPROVE permission (Manager/Admin)' : 'Execute via registered adapter'}
                         >
-                          {isExecuting ? <><span className="spinner" /> Executing...</> : '⚡ Claim & Execute'}
+                          {isExecuting ? <><span className="spinner" /> Executing...</> : 'Claim & Execute'}
                         </button>
                       </div>
                     )}
@@ -334,7 +350,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
                           disabled={isVerifying || !hasPermission('ACTION_REQUEST')}
                           title={!hasPermission('ACTION_REQUEST') ? 'Requires ACTION_REQUEST permission (L2/Manager/Admin)' : 'Run automated verification'}
                         >
-                          {isVerifying ? <><span className="spinner" /> Verifying Probes...</> : '🛡️ Run Automated Health Verification'}
+                          {isVerifying ? <><span className="spinner" /> Verifying Probes...</> : 'Run Automated Health Verification'}
                         </button>
                         <button
                           className="btn btn-ghost"
@@ -351,7 +367,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
                     {/* Stage 4: VERIFIED -> Success state */}
                     {rem.status === 'VERIFIED' && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--status-healthy)', fontWeight: 700, fontSize: '13px' }}>
-                        <span>🛡️ Verified Safe • Incident Mitigated</span>
+                        <span>Verified Safe • Incident Mitigated</span>
                       </div>
                     )}
                   </div>
@@ -395,7 +411,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                       <strong style={{ color: rem.status === 'VERIFIED' ? 'var(--status-healthy)' : 'var(--status-critical)' }}>
-                        {rem.status === 'VERIFIED' ? '✓ Automated Verification Probes Succeeded' : '✕ Verification Probes Detected Anomalies'}
+                        {rem.status === 'VERIFIED' ? 'Automated Verification Probes Succeeded' : 'Verification Probes Detected Anomalies'}
                       </strong>
                       <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                         Verified at {formatDate(rem.verified_at)}
@@ -450,6 +466,7 @@ export function RemediationsPage({ onNavigateToIncident }) {
               value={reviewModal.comment}
               onChange={(e) => setReviewModal((prev) => ({ ...prev, comment: e.target.value }))}
               placeholder="Enter review decision notes..."
+              required
               style={{
                 width: '100%',
                 background: 'var(--bg-elevated)',
@@ -459,6 +476,17 @@ export function RemediationsPage({ onNavigateToIncident }) {
                 padding: '10px',
                 fontSize: '13px',
               }}
+            />
+            {/* Honeypot field for bot/spam protection */}
+            <input
+              type="text"
+              name="company_fax_verification"
+              value={honeypotValue}
+              onChange={(e) => setHoneypotValue(e.target.value)}
+              style={{ display: 'none', position: 'absolute', left: '-9999px' }}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
             />
           </div>
 

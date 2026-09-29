@@ -125,9 +125,13 @@ export function IncidentChatTab({ incident }) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '16px' }}>💬</span>
+          <span style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center' }} aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </span>
           <span style={{ fontWeight: 700, color: 'var(--text-highlight)', fontSize: '14px' }}>
-            Interactive Copilot Investigation — Incident #{incident.incident_id}
+            Interactive Copilot Investigation - Incident #{incident.incident_id}
           </span>
           <span
             style={{
@@ -167,7 +171,12 @@ export function IncidentChatTab({ incident }) {
           </div>
         ) : messages.length === 0 ? (
           <div style={{ margin: 'auto', maxWidth: '520px', textAlign: 'center', padding: '20px' }}>
-            <div style={{ fontSize: '24px', marginBottom: '8px' }}>🔍</div>
+            <div style={{ display: 'flex', justifyContent: 'center', color: 'var(--accent-cyan)', marginBottom: '8px' }} aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
             <h4 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-highlight)', marginBottom: '6px' }}>
               Investigate Incident #{incident.incident_id} in Natural Language
             </h4>
@@ -194,7 +203,7 @@ export function IncidentChatTab({ incident }) {
                   onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent-cyan)')}
                   onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-subtle)')}
                 >
-                  ⚡ {sug}
+                  <span style={{ marginRight: '6px' }}>&rsaquo;</span> {sug}
                 </button>
               ))}
             </div>

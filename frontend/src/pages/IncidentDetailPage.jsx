@@ -242,7 +242,7 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
               color: 'var(--accent-cyan)',
             }}
           >
-            <span>💬</span> Ask Copilot
+            Ask Copilot
           </button>
 
           <button
@@ -255,9 +255,7 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
                 <span className="spinner" /> LangGraph Agents Running...
               </>
             ) : (
-              <>
-                <span>🤖</span> Run LangGraph Investigation
-              </>
+              'Run LangGraph Investigation'
             )}
           </button>
 
@@ -271,9 +269,7 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
                 <span className="spinner" /> Synthesizing AI Decision...
               </>
             ) : (
-              <>
-                <span>⚡</span> Run Full AI Intelligence
-              </>
+              'Run Full AI Intelligence'
             )}
           </button>
         </div>
@@ -329,13 +325,13 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
         </div>
 
         {/* Operational Subtabs */}
-        <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px' }}>
+        <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', overflowX: 'auto' }}>
           {[
-            { id: 'intelligence', label: 'AI Intelligence & Root Cause', icon: '🧠' },
-            { id: 'copilot-chat', label: 'Copilot Chat', icon: '💬' },
-            { id: 'actions', label: `Recommended Actions (${intelligence?.recommended_actions?.length || 0})`, icon: '⚡' },
-            { id: 'timeline', label: `Event Timeline (${events.length})`, icon: '⏱️' },
-            { id: 'rag', label: `RAG Runbook Evidence (${ragEvidence.length})`, icon: '📚' },
+            { id: 'intelligence', label: 'AI Intelligence & Root Cause' },
+            { id: 'copilot-chat', label: 'Copilot Chat' },
+            { id: 'actions', label: `Recommended Actions (${intelligence?.recommended_actions?.length || 0})` },
+            { id: 'timeline', label: `Event Timeline (${events.length})` },
+            { id: 'rag', label: `RAG Runbook Evidence (${ragEvidence.length})` },
           ].map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -355,7 +351,6 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
                   border: isActive ? '1px solid rgba(0, 242, 254, 0.3)' : '1px solid transparent',
                 }}
               >
-                <span>{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
             );
@@ -557,7 +552,7 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
                         </span>
                         {act.requires_human_approval && (
                           <span className="badge badge-purple" style={{ fontSize: '10px' }}>
-                            🔒 HUMAN APPROVAL REQUIRED
+                            HUMAN APPROVAL REQUIRED
                           </span>
                         )}
                       </div>
@@ -670,7 +665,7 @@ export function IncidentDetailPage({ incidentId, onBack, onNavigateToRemediation
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontWeight: 700, color: 'var(--accent-cyan)', fontSize: '14px' }}>
-                      📖 {rag.document_title || 'Operational Runbook'} (v{rag.version || 1})
+                      {rag.document_title || 'Operational Runbook'} (v{rag.version || 1})
                     </span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--status-healthy)' }}>
                       Similarity: {formatScore(rag.similarity_score)}

@@ -6,27 +6,27 @@ import { useToast } from '../context/ToastContext';
 
 const STARTER_PROMPTS = [
   {
-    icon: '🚨',
+    type: 'alert',
     title: 'Payment API Latency',
     prompt: 'What is causing high latency and errors on payment-api?',
   },
   {
-    icon: '📋',
+    type: 'log',
     title: 'Search Error Logs',
     prompt: 'Check recent error logs for payment-api and identify the failing queries.',
   },
   {
-    icon: '📈',
+    type: 'metrics',
     title: 'Database Pool Telemetry',
     prompt: 'Query active database connections and error rates for payment-api.',
   },
   {
-    icon: '🧠',
+    type: 'ml',
     title: 'Predict Incident Risk',
     prompt: 'Run ML risk prediction on incident #1 and show contributing factors.',
   },
   {
-    icon: '🚀',
+    type: 'deploy',
     title: 'Recent Deployments',
     prompt: 'List recent deployments across all microservices and check if any coincided with errors.',
   },
@@ -213,8 +213,11 @@ export function ChatPage({ defaultIncidentId = null, onNavigateToIncident }) {
                 fontSize: '16px',
                 boxShadow: '0 0 12px rgba(0, 242, 254, 0.4)',
               }}
+              aria-hidden="true"
             >
-              💬
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -236,7 +239,7 @@ export function ChatPage({ defaultIncidentId = null, onNavigateToIncident }) {
                 </span>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                Ask in natural language — OpsPilot determines required tools, gathers grounded evidence, and synthesizes answers.
+                Ask in natural language: OpsPilot determines required tools, gathers grounded evidence, and synthesizes answers.
               </div>
             </div>
           </div>
@@ -258,13 +261,17 @@ export function ChatPage({ defaultIncidentId = null, onNavigateToIncident }) {
                   gap: '6px',
                 }}
               >
-                <span>🚨 Bound to INC #{incidentIdContext}</span>
+                <span>Bound to INC #{incidentIdContext}</span>
                 <button
                   onClick={() => setIncidentIdContext(null)}
-                  style={{ color: 'var(--text-muted)', fontSize: '10px' }}
+                  style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'flex', alignItems: 'center' }}
                   title="Remove incident context"
+                  aria-label="Remove incident context"
                 >
-                  ✕
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
                 </button>
               </span>
             )}
@@ -308,11 +315,16 @@ export function ChatPage({ defaultIncidentId = null, onNavigateToIncident }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '28px',
+                  color: 'var(--accent-cyan)',
                   boxShadow: '0 0 20px rgba(0, 242, 254, 0.25)',
                 }}
+                aria-hidden="true"
               >
-                🤖
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
               </div>
               <h3 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-highlight)', marginBottom: '8px' }}>
                 Operational Investigation Copilot
@@ -353,7 +365,11 @@ export function ChatPage({ defaultIncidentId = null, onNavigateToIncident }) {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span>{sp.icon}</span>
+                      <span style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </span>
                       <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-highlight)' }}>
                         {sp.title}
                       </span>

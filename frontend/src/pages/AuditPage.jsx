@@ -32,7 +32,7 @@ export function AuditPage() {
             <span>Immutable Audit Trail &amp; Observability</span>
           </h1>
           <p className="page-subtitle">
-            Screen 10: Cryptographically logged operations, human approvals, execution claims, and OpenTelemetry trace correlations.
+            Cryptographically logged operations, human approvals, execution claims, and OpenTelemetry trace correlations.
           </p>
         </div>
 
@@ -44,10 +44,10 @@ export function AuditPage() {
             className="btn btn-secondary"
             title="Open Prometheus raw metrics endpoint"
           >
-            📊 Prometheus Metrics &nearr;
+            Prometheus Metrics &nearr;
           </a>
           <button className="btn btn-secondary" onClick={loadLogs}>
-            🔄 Refresh
+            Refresh
           </button>
         </div>
       </div>
