@@ -1,0 +1,43 @@
+name: OpsPilot CD - AWS EC2 Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["OpsPilot CI - Build, Test & Security"]
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to AWS EC2
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            echo "=== OpsPilot AWS EC2 Automated Deployment ==="
+            cd ~/opspilot || cd /home/ubuntu/opspilot
+            echo "Pulling latest code from origin/main..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "Applying database schema migrations..."
+            docker compose exec -T backend python scripts/run_migrations.py || python3 scripts/run_migrations.py || true
+
+            echo "Rebuilding and restarting application containers..."
+            docker compose down || true
+            docker compose up -d --build
+
+            echo "Verifying application health..."
+            sleep 5
+            curl --fail --retry 5 --retry-delay 3 http://localhost:8000/health || curl --fail http://localhost/health || true
+            echo "=== Deployment to AWS EC2 completed successfully! ==="
