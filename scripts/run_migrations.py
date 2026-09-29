@@ -17,25 +17,30 @@ import psycopg
 def _to_psycopg_conninfo(database_url: str) -> str:
     """
     Convert a DATABASE_URL to a psycopg conninfo string.
-
-    Accepts either:
-      - postgresql+psycopg://user:pass@host:port/db  (SQLAlchemy format from CI)
-      - postgresql://user:pass@host:port/db
-      - postgres://user:pass@host:port/db
-      - An already-valid psycopg conninfo / DSN string
+    Ensures passwords with special characters (such as '@') are properly encoded.
     """
+    import urllib.parse
+
     for prefix in (
         "postgresql+psycopg://",
         "postgresql://",
         "postgres://",
     ):
         if database_url.startswith(prefix):
-            return "postgresql://" + database_url[len(prefix):]
-    # Already a raw conninfo string — return as-is
+            remainder = database_url[len(prefix):]
+            if "@" in remainder:
+                userinfo, hostinfo = remainder.rsplit("@", 1)
+                if ":" in userinfo:
+                    u, p = userinfo.split(":", 1)
+                    p_clean = urllib.parse.unquote(p)
+                    return f"postgresql://{u}:{urllib.parse.quote_plus(p_clean)}@{hostinfo}"
+            return "postgresql://" + remainder
     return database_url
 
 
 def run_migrations() -> None:
+    import urllib.parse
+
     raw_url = os.environ.get("DATABASE_URL") or os.environ.get("DB_URL")
     if not raw_url:
         db_user = os.environ.get("DB_USER") or os.environ.get("POSTGRES_USER")
@@ -44,7 +49,9 @@ def run_migrations() -> None:
         db_port = os.environ.get("DB_PORT") or os.environ.get("POSTGRES_PORT", "5432")
         db_name = os.environ.get("DB_NAME") or os.environ.get("POSTGRES_DB", "opspilot")
         if db_user and db_pass:
-            raw_url = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+            enc_user = urllib.parse.quote_plus(db_user)
+            enc_pass = urllib.parse.quote_plus(db_pass)
+            raw_url = f"postgresql://{enc_user}:{enc_pass}@{db_host}:{db_port}/{db_name}"
         else:
             print("[-] Error: DATABASE_URL environment variable is required.")
             sys.exit(1)
@@ -52,6 +59,7 @@ def run_migrations() -> None:
     conninfo = _to_psycopg_conninfo(raw_url)
 
     migrations_dir = Path(__file__).resolve().parent.parent / "db" / "migrations"
+
     if not migrations_dir.exists():
         print(f"[-] Migrations directory not found at: {migrations_dir}")
         sys.exit(1)
