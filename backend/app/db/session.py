@@ -4,9 +4,7 @@ from sqlalchemy.engine import URL
 from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import settings
 
-if settings.database_url:
-    database_url = settings.database_url
-else:
+if settings.db_host and settings.db_user and settings.db_name:
     database_url = URL.create(
         drivername="postgresql+psycopg",
         username=settings.db_user,
@@ -15,6 +13,8 @@ else:
         port=settings.db_port,
         database=settings.db_name,
     )
+elif settings.database_url:
+    database_url = settings.database_url
 engine = create_engine(database_url, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
