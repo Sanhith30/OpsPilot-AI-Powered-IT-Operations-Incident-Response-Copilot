@@ -1,0 +1,5 @@
+-- Run from backend directory in PowerShell:
+-- python -c "from app.core.security import hash_password; print(hash_password('OpsPilot@123'))"
+-- Then, in pgAdmin/psql, update only the hash:
+-- UPDATE core.users SET password_hash='<GENERATED_HASH>' WHERE user_id=1;
+-- Never commit real passwords or .env to Git.

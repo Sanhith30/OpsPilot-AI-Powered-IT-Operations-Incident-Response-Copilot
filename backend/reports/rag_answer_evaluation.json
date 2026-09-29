@@ -1,0 +1,1817 @@
+{
+  "dataset_version": "2.0",
+  "total_cases": 32,
+  "score_threshold": 0.65,
+  "top_k": 5,
+  "llm_model": "gemini-3.8-flash",
+  "pipeline_a_vector_only": {
+    "dataset_version": "2.0",
+    "total_cases": 32,
+    "pipeline_name": "vector_only",
+    "citation_validity_rate": 0.9688,
+    "average_completeness": 0.9219,
+    "grounding_rate": 0.9688,
+    "unsupported_claim_rate": 0.0,
+    "category_metrics": {
+      "root_cause_guidance": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "symptom_lookup": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.75,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.5
+      },
+      "troubleshooting_procedure": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "runbook_lookup": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "service_specific_lookup": {
+        "case_count": 7,
+        "citation_validity_rate": 0.8571,
+        "average_completeness": 1.0,
+        "grounding_rate": 0.8571,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.8571
+      },
+      "cross_document_disambiguation": {
+        "case_count": 7,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 1.0,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 1.0
+      },
+      "postmortem_lookup": {
+        "case_count": 2,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 1.0,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 1.0
+      }
+    },
+    "results": [
+      {
+        "case_id": "ANS-001",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 3,
+        "expected_fact_count": 3,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-001",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Database connection timeout errors occurred in payment api",
+            "Deployment version 2.8.1 modified connection pool configuration",
+            "Connection pool acquisition timeouts caused transaction latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 3
+        }
+      },
+      {
+        "case_id": "ANS-002",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-002",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Payment api deployment v2.8.1 reduced connection pool settings",
+            "Connection pool was insufficient under incoming request concurrency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-003",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-003",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Worker threads were blocked waiting for database connections",
+            "Pending requests backed up causing elevated checkout latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-004",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-004",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Misconfigured pool limits led to rapid connection starvation"
+          ],
+          "missing_facts": [
+            "Deployment v2.8.1 is the primary suspected trigger"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-005",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-005",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Connection wait time p99 increased significantly",
+            "Active connections reached maximum capacity limits"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-006",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-006",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Gateway timeout errors occurred during payment processing"
+          ],
+          "missing_facts": [
+            "HTTP 500 and 504 status codes returned to upstream clients"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-007",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-007",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Pool acquisition wait time was high while query execution duration remained normal",
+            "Symptoms point to connection availability rather than query execution performance"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-008",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-008",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "POST payments and charges endpoints exhibited elevated latency"
+          ],
+          "missing_facts": [
+            "Transactional endpoints requiring database writes were primarily impacted"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-009",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-009",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Roll back deployment v2.8.1 or increase connection pool capacity",
+            "Restart or scale payment-api instances after reverting pool configuration"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-010",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-010",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Verify readiness endpoint and monitor connection pool acquisition latency",
+            "Confirm active connection count stabilizes below maximum threshold"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-011",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-011",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Query pg_stat_activity to inspect client connection states and counts",
+            "Examine waiting or idle in transaction client sessions"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-012",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-012",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Roll back payment-api deployment to previous stable version 2.8.0"
+          ],
+          "missing_facts": [
+            "Validate connection pool metrics return to baseline levels"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-013",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-013",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Runbook provides standard pool size and connection guidelines for Payment API",
+            "Connection settings should allocate sufficient connections to handle peak concurrency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-014",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-014",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Escalate to database administrator and on-call platform engineering team"
+          ],
+          "missing_facts": [
+            "Engage payment team lead if deployment rollback is required"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-015",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-015",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Alert triggers when connection pool utilization exceeds high threshold",
+            "Latency or timeout errors trigger page to on-call engineer"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-016",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-016",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Conduct post-mortem review analyzing deployment configuration validation",
+            "Add automated CI pipeline checks for connection pool parameters"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-017",
+        "category": "service_specific_lookup",
+        "citation_valid": false,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 0.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-017",
+          "used_citations": [],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Authentication service database connection timeouts occurred during token verification",
+            "Token validation failures and database timeouts resulted in elevated 401 Unauthorized errors"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed authentication service database connection timeouts during token verification, causing elevated 401 Unauthorized errors. Operational runbook specifies scaling replicas, verifying connection pool settings, and flushing expired session caches.",
+          "findings_count": 1
+        }
+      },
+      {
+        "case_id": "ANS-018",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-018",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Database deadlock detected in order_items table during checkout placement",
+            "Lock contention caused worker thread starvation and elevated checkout latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database deadlock errors on the order_items table during checkout transactions, causing thread pool starvation and elevated latency. Runbook recommends terminating blocking transactions and enabling asynchronous queuing to decouple checkout requests from immediate database persistence while resolving lock contention.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-019",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-019",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Redis memory utilization exceeded configured maxmemory limit",
+            "Cluster rejected write commands due to memory exhaustion under volatile-lru policy"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Redis memory utilization exceeded maxmemory limits, leading to rejected write commands and elevated command timeouts. Runbook recommends increasing maxmemory, purging expired keys, and verifying sentinel health.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-020",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-020",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Query pg_stat_activity to inspect client connections and idle in transaction sessions",
+            "Configure PgBouncer in transaction pooling mode to prevent connection starvation"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed global PostgreSQL database connection pool saturation. Diagnostic procedures query pg_stat_activity for client connections and idle in transaction sessions, and mandate configuring PgBouncer in transaction pooling mode to allocate server connections only during active transaction execution, preventing microservices from holding persistent idle connections.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-021",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-021",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Container was terminated with exit code 137 OOMKilled due to memory limits",
+            "Increase container memory limits and perform rolling restart of deployment"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Kubernetes pods repeatedly terminated with exit code 137 OOMKilled. Recovery procedure requires configuring application heap limits to approximately 75 percent of container memory limit to prevent container from being OOMKilled by Linux kernel cgroup enforcer, increasing memory allocations, and performing rolling restart of deployment.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-022",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-022",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Execute deployment rollback using kubectl rollout undo or ArgoCD sync",
+            "Assess database schema migration backwards compatibility before rolling back"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed production deployment rollback triggers met. Standard operating procedure specifies assessing database schema migration backwards compatibility before rolling back, verifying whether recent release applied breaking schema changes like dropped columns or renamed tables, and executing deployment rollback using kubectl rollout undo or ArgoCD sync to prevent catastrophic application failures.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-023",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-023",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Treat leaked credentials as SEV-1 security incident and revoke secret in Vault immediately",
+            "Rotate credentials across microservices and alter compromised database user in PostgreSQL"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed credential disclosure requiring immediate containment. Protocol requires treating leaked credentials as SEV-1 security incident and revoking secret in Vault immediately, rotating credentials across microservices and altering compromised database user in PostgreSQL, preserving application access logs, WAF telemetry, and audit trail records before restarting instances, and inspecting audit logs and query history for unauthorized data access or privilege escalation.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-024",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-024",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Escalate to SEV-1 if incident remains unmitigated after 15 minutes",
+            "Page Incident Commander and post status updates every 15 minutes"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed incident escalation criteria met. Operational procedure mandates escalating to SEV-1 if incident remains unmitigated after 15 minutes, paging Incident Commander who leads the response and has final authority over mitigation decisions like rollbacks, and posting status updates every 15 minutes.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-025",
+        "category": "postmortem_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-025",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Release v2.8.1 reduced connection pool max_size from 50 to 5",
+            "Pool exhaustion occurred under incoming transaction concurrency causing 42 minutes of downtime"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Postmortem review confirmed release v2.8.1 reduced connection pool max_size from 50 to 5, resulting in pool exhaustion under incoming transaction concurrency causing 42 minutes of downtime. Preventative actions include adding automated CI configuration linting to validate pool parameters against runbook baselines and upgrading deployment pipeline with automated 10-minute canary evaluation stage.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-026",
+        "category": "postmortem_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-026",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Add automated CI configuration linting to validate pool parameters against runbook baselines",
+            "Upgrade deployment pipeline with automated 10-minute canary evaluation stage"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Postmortem review confirmed release v2.8.1 reduced connection pool max_size from 50 to 5, resulting in pool exhaustion under incoming transaction concurrency causing 42 minutes of downtime. Preventative actions include adding automated CI configuration linting to validate pool parameters against runbook baselines and upgrading deployment pipeline with automated 10-minute canary evaluation stage.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-027",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-027",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "PgBouncer transaction pooling mode allocates server connections only during active transaction execution",
+            "Prevents microservices from holding persistent idle connections"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed global PostgreSQL database connection pool saturation. Diagnostic procedures query pg_stat_activity for client connections and idle in transaction sessions, and mandate configuring PgBouncer in transaction pooling mode to allocate server connections only during active transaction execution, preventing microservices from holding persistent idle connections.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-028",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-028",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Configure application heap limits to approximately 75 percent of container memory limit",
+            "Prevents container from being OOMKilled by Linux kernel cgroup enforcer"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Kubernetes pods repeatedly terminated with exit code 137 OOMKilled. Recovery procedure requires configuring application heap limits to approximately 75 percent of container memory limit to prevent container from being OOMKilled by Linux kernel cgroup enforcer, increasing memory allocations, and performing rolling restart of deployment.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-029",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-029",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Verify whether recent release applied breaking schema changes like dropped columns or renamed tables",
+            "Blind container rollback against incompatible database schema will cause catastrophic application failures"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed production deployment rollback triggers met. Standard operating procedure specifies assessing database schema migration backwards compatibility before rolling back, verifying whether recent release applied breaking schema changes like dropped columns or renamed tables, and executing deployment rollback using kubectl rollout undo or ArgoCD sync to prevent catastrophic application failures.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-030",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-030",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Preserve application access logs, WAF telemetry, and audit trail records before restarting instances",
+            "Inspect audit logs and query history for unauthorized data access or privilege escalation"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed credential disclosure requiring immediate containment. Protocol requires treating leaked credentials as SEV-1 security incident and revoking secret in Vault immediately, rotating credentials across microservices and altering compromised database user in PostgreSQL, preserving application access logs, WAF telemetry, and audit trail records before restarting instances, and inspecting audit logs and query history for unauthorized data access or privilege escalation.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-031",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-031",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Incident Commander leads the response and has final authority over mitigation decisions like rollbacks",
+            "Coordinates investigation tasks and ensures communications lead posts timely status updates"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed incident escalation criteria met. Operational procedure mandates escalating to SEV-1 if incident remains unmitigated after 15 minutes, paging Incident Commander who leads the response and has final authority over mitigation decisions like rollbacks, and posting status updates every 15 minutes.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-032",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-032",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Temporarily enable asynchronous order submission queuing",
+            "Decouples checkout requests from immediate database persistence while resolving lock contention"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database deadlock errors on the order_items table during checkout transactions, causing thread pool starvation and elevated latency. Runbook recommends terminating blocking transactions and enabling asynchronous queuing to decouple checkout requests from immediate database persistence while resolving lock contention.",
+          "findings_count": 2
+        }
+      }
+    ]
+  },
+  "pipeline_b_hybrid_reranked": {
+    "dataset_version": "2.0",
+    "total_cases": 32,
+    "pipeline_name": "hybrid_reranked",
+    "citation_validity_rate": 0.9688,
+    "average_completeness": 0.9219,
+    "grounding_rate": 0.9688,
+    "unsupported_claim_rate": 0.0,
+    "category_metrics": {
+      "root_cause_guidance": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "symptom_lookup": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.75,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.5
+      },
+      "troubleshooting_procedure": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "runbook_lookup": {
+        "case_count": 4,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 0.875,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.75
+      },
+      "service_specific_lookup": {
+        "case_count": 7,
+        "citation_validity_rate": 0.8571,
+        "average_completeness": 1.0,
+        "grounding_rate": 0.8571,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 0.8571
+      },
+      "cross_document_disambiguation": {
+        "case_count": 7,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 1.0,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 1.0
+      },
+      "postmortem_lookup": {
+        "case_count": 2,
+        "citation_validity_rate": 1.0,
+        "average_completeness": 1.0,
+        "grounding_rate": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "pass_rate": 1.0
+      }
+    },
+    "results": [
+      {
+        "case_id": "ANS-001",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 3,
+        "expected_fact_count": 3,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-001",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Database connection timeout errors occurred in payment api",
+            "Deployment version 2.8.1 modified connection pool configuration",
+            "Connection pool acquisition timeouts caused transaction latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 3
+        }
+      },
+      {
+        "case_id": "ANS-002",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-002",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Payment api deployment v2.8.1 reduced connection pool settings",
+            "Connection pool was insufficient under incoming request concurrency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-003",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-003",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Worker threads were blocked waiting for database connections",
+            "Pending requests backed up causing elevated checkout latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-004",
+        "category": "root_cause_guidance",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-004",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Misconfigured pool limits led to rapid connection starvation"
+          ],
+          "missing_facts": [
+            "Deployment v2.8.1 is the primary suspected trigger"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-005",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-005",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Connection wait time p99 increased significantly",
+            "Active connections reached maximum capacity limits"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-006",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-006",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Gateway timeout errors occurred during payment processing"
+          ],
+          "missing_facts": [
+            "HTTP 500 and 504 status codes returned to upstream clients"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-007",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-007",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Pool acquisition wait time was high while query execution duration remained normal",
+            "Symptoms point to connection availability rather than query execution performance"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-008",
+        "category": "symptom_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-008",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "POST payments and charges endpoints exhibited elevated latency"
+          ],
+          "missing_facts": [
+            "Transactional endpoints requiring database writes were primarily impacted"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-009",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-009",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Roll back deployment v2.8.1 or increase connection pool capacity",
+            "Restart or scale payment-api instances after reverting pool configuration"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-010",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-010",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Verify readiness endpoint and monitor connection pool acquisition latency",
+            "Confirm active connection count stabilizes below maximum threshold"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-011",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-011",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Query pg_stat_activity to inspect client connection states and counts",
+            "Examine waiting or idle in transaction client sessions"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-012",
+        "category": "troubleshooting_procedure",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-012",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Roll back payment-api deployment to previous stable version 2.8.0"
+          ],
+          "missing_facts": [
+            "Validate connection pool metrics return to baseline levels"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-013",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-013",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Runbook provides standard pool size and connection guidelines for Payment API",
+            "Connection settings should allocate sufficient connections to handle peak concurrency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-014",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 1,
+        "expected_fact_count": 2,
+        "completeness_score": 0.5,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-014",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Escalate to database administrator and on-call platform engineering team"
+          ],
+          "missing_facts": [
+            "Engage payment team lead if deployment rollback is required"
+          ],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-015",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-015",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Alert triggers when connection pool utilization exceeds high threshold",
+            "Latency or timeout errors trigger page to on-call engineer"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-016",
+        "category": "runbook_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-016",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Conduct post-mortem review analyzing deployment configuration validation",
+            "Add automated CI pipeline checks for connection pool parameters"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database connection timeout errors in payment api following deployment version 2.8.1. The deployment modified connection pool configuration limits, leading to rapid connection pool exhaustion and acquisition timeouts under concurrency. Worker threads were blocked waiting for available database connections, resulting in elevated checkout latency, HTTP 500 and 504 gateway timeouts, and p99 latency spikes on transactional payment and charge endpoints. Pool acquisition wait time was high while query execution duration remained normal, indicating connection availability constraints rather than slow query performance. Operational runbook procedures advise rolling back payment-api deployment to previous stable version 2.8.0 or increasing connection pool capacity, restarting or scaling instances, verifying /health/ready, querying pg_stat_activity to inspect connection counts and client states, and conducting a post-mortem review with automated CI pipeline checks.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-017",
+        "category": "service_specific_lookup",
+        "citation_valid": false,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 0.0,
+        "passed": false,
+        "trace": {
+          "case_id": "ANS-017",
+          "used_citations": [],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Authentication service database connection timeouts occurred during token verification",
+            "Token validation failures and database timeouts resulted in elevated 401 Unauthorized errors"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed authentication service database connection timeouts during token verification, causing elevated 401 Unauthorized errors. Operational runbook specifies scaling replicas, verifying connection pool settings, and flushing expired session caches.",
+          "findings_count": 1
+        }
+      },
+      {
+        "case_id": "ANS-018",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-018",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Database deadlock detected in order_items table during checkout placement",
+            "Lock contention caused worker thread starvation and elevated checkout latency"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database deadlock errors on the order_items table during checkout transactions, causing thread pool starvation and elevated latency. Runbook recommends terminating blocking transactions and enabling asynchronous queuing to decouple checkout requests from immediate database persistence while resolving lock contention.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-019",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-019",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Redis memory utilization exceeded configured maxmemory limit",
+            "Cluster rejected write commands due to memory exhaustion under volatile-lru policy"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Redis memory utilization exceeded maxmemory limits, leading to rejected write commands and elevated command timeouts. Runbook recommends increasing maxmemory, purging expired keys, and verifying sentinel health.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-020",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-020",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Query pg_stat_activity to inspect client connections and idle in transaction sessions",
+            "Configure PgBouncer in transaction pooling mode to prevent connection starvation"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed global PostgreSQL database connection pool saturation. Diagnostic procedures query pg_stat_activity for client connections and idle in transaction sessions, and mandate configuring PgBouncer in transaction pooling mode to allocate server connections only during active transaction execution, preventing microservices from holding persistent idle connections.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-021",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-021",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Container was terminated with exit code 137 OOMKilled due to memory limits",
+            "Increase container memory limits and perform rolling restart of deployment"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Kubernetes pods repeatedly terminated with exit code 137 OOMKilled. Recovery procedure requires configuring application heap limits to approximately 75 percent of container memory limit to prevent container from being OOMKilled by Linux kernel cgroup enforcer, increasing memory allocations, and performing rolling restart of deployment.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-022",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-022",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Execute deployment rollback using kubectl rollout undo or ArgoCD sync",
+            "Assess database schema migration backwards compatibility before rolling back"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed production deployment rollback triggers met. Standard operating procedure specifies assessing database schema migration backwards compatibility before rolling back, verifying whether recent release applied breaking schema changes like dropped columns or renamed tables, and executing deployment rollback using kubectl rollout undo or ArgoCD sync to prevent catastrophic application failures.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-023",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-023",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Treat leaked credentials as SEV-1 security incident and revoke secret in Vault immediately",
+            "Rotate credentials across microservices and alter compromised database user in PostgreSQL"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed credential disclosure requiring immediate containment. Protocol requires treating leaked credentials as SEV-1 security incident and revoking secret in Vault immediately, rotating credentials across microservices and altering compromised database user in PostgreSQL, preserving application access logs, WAF telemetry, and audit trail records before restarting instances, and inspecting audit logs and query history for unauthorized data access or privilege escalation.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-024",
+        "category": "service_specific_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-024",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Escalate to SEV-1 if incident remains unmitigated after 15 minutes",
+            "Page Incident Commander and post status updates every 15 minutes"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed incident escalation criteria met. Operational procedure mandates escalating to SEV-1 if incident remains unmitigated after 15 minutes, paging Incident Commander who leads the response and has final authority over mitigation decisions like rollbacks, and posting status updates every 15 minutes.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-025",
+        "category": "postmortem_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-025",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Release v2.8.1 reduced connection pool max_size from 50 to 5",
+            "Pool exhaustion occurred under incoming transaction concurrency causing 42 minutes of downtime"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Postmortem review confirmed release v2.8.1 reduced connection pool max_size from 50 to 5, resulting in pool exhaustion under incoming transaction concurrency causing 42 minutes of downtime. Preventative actions include adding automated CI configuration linting to validate pool parameters against runbook baselines and upgrading deployment pipeline with automated 10-minute canary evaluation stage.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-026",
+        "category": "postmortem_lookup",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-026",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Add automated CI configuration linting to validate pool parameters against runbook baselines",
+            "Upgrade deployment pipeline with automated 10-minute canary evaluation stage"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Postmortem review confirmed release v2.8.1 reduced connection pool max_size from 50 to 5, resulting in pool exhaustion under incoming transaction concurrency causing 42 minutes of downtime. Preventative actions include adding automated CI configuration linting to validate pool parameters against runbook baselines and upgrading deployment pipeline with automated 10-minute canary evaluation stage.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-027",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-027",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "PgBouncer transaction pooling mode allocates server connections only during active transaction execution",
+            "Prevents microservices from holding persistent idle connections"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed global PostgreSQL database connection pool saturation. Diagnostic procedures query pg_stat_activity for client connections and idle in transaction sessions, and mandate configuring PgBouncer in transaction pooling mode to allocate server connections only during active transaction execution, preventing microservices from holding persistent idle connections.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-028",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-028",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Configure application heap limits to approximately 75 percent of container memory limit",
+            "Prevents container from being OOMKilled by Linux kernel cgroup enforcer"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed Kubernetes pods repeatedly terminated with exit code 137 OOMKilled. Recovery procedure requires configuring application heap limits to approximately 75 percent of container memory limit to prevent container from being OOMKilled by Linux kernel cgroup enforcer, increasing memory allocations, and performing rolling restart of deployment.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-029",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-029",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Verify whether recent release applied breaking schema changes like dropped columns or renamed tables",
+            "Blind container rollback against incompatible database schema will cause catastrophic application failures"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed production deployment rollback triggers met. Standard operating procedure specifies assessing database schema migration backwards compatibility before rolling back, verifying whether recent release applied breaking schema changes like dropped columns or renamed tables, and executing deployment rollback using kubectl rollout undo or ArgoCD sync to prevent catastrophic application failures.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-030",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-030",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Preserve application access logs, WAF telemetry, and audit trail records before restarting instances",
+            "Inspect audit logs and query history for unauthorized data access or privilege escalation"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed credential disclosure requiring immediate containment. Protocol requires treating leaked credentials as SEV-1 security incident and revoking secret in Vault immediately, rotating credentials across microservices and altering compromised database user in PostgreSQL, preserving application access logs, WAF telemetry, and audit trail records before restarting instances, and inspecting audit logs and query history for unauthorized data access or privilege escalation.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-031",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-031",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Incident Commander leads the response and has final authority over mitigation decisions like rollbacks",
+            "Coordinates investigation tasks and ensures communications lead posts timely status updates"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed incident escalation criteria met. Operational procedure mandates escalating to SEV-1 if incident remains unmitigated after 15 minutes, paging Incident Commander who leads the response and has final authority over mitigation decisions like rollbacks, and posting status updates every 15 minutes.",
+          "findings_count": 2
+        }
+      },
+      {
+        "case_id": "ANS-032",
+        "category": "cross_document_disambiguation",
+        "citation_valid": true,
+        "expected_facts_covered": 2,
+        "expected_fact_count": 2,
+        "completeness_score": 1.0,
+        "unsupported_claim_count": 0,
+        "grounding_score": 1.0,
+        "passed": true,
+        "trace": {
+          "case_id": "ANS-032",
+          "used_citations": [
+            "KB-1"
+          ],
+          "invalid_citations": [],
+          "expected_facts_covered": [
+            "Temporarily enable asynchronous order submission queuing",
+            "Decouples checkout requests from immediate database persistence while resolving lock contention"
+          ],
+          "missing_facts": [],
+          "unsupported_claims": [],
+          "answer_summary": "Investigation confirmed database deadlock errors on the order_items table during checkout transactions, causing thread pool starvation and elevated latency. Runbook recommends terminating blocking transactions and enabling asynchronous queuing to decouple checkout requests from immediate database persistence while resolving lock contention.",
+          "findings_count": 2
+        }
+      }
+    ]
+  }
+}

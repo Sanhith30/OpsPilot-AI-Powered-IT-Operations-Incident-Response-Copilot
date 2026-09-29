@@ -1,0 +1,1038 @@
+{
+  "dataset_version": "2.0",
+  "description": "OpsPilot Multi-Document RAG Answer Quality, Groundedness, and Hallucination Evaluation Benchmark",
+  "cases": [
+    {
+      "case_id": "ANS-001",
+      "category": "root_cause_guidance",
+      "question": "What caused the database connection timeout errors in Payment API?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Payment API database connection timeouts",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Deployment of payment-api v2.8.1 updated connection pool max connections to 5",
+          "confidence": "HIGH"
+        },
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-101",
+          "summary": "Payment API latency increased above 5000ms with connection pool acquisition timeout errors",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Database connection timeout errors occurred in payment api",
+        "Deployment version 2.8.1 modified connection pool configuration",
+        "Connection pool acquisition timeouts caused transaction latency"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "The PostgreSQL server host ran out of disk space",
+        "Network switch hardware failure severed connectivity",
+        "Database host suffered an out-of-memory kernel panic"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-002",
+      "category": "root_cause_guidance",
+      "question": "How did deployment v2.8.1 trigger pool exhaustion in payment-api?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Connection pool exhaustion after deployment",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "payment-api v2.8.1 deployment reduced max_connections pool setting",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Payment api deployment v2.8.1 reduced connection pool settings",
+        "Connection pool was insufficient under incoming request concurrency"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Payment API source code repository was deleted",
+        "A distributed denial of service attack overwhelmed payment gateway"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-003",
+      "category": "root_cause_guidance",
+      "question": "Why did latency spike across checkout transactions during the incident?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Checkout latency degradation",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-102",
+          "summary": "Worker threads blocked waiting for available PostgreSQL database connections",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Worker threads were blocked waiting for database connections",
+        "Pending requests backed up causing elevated checkout latency"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Stripe payment gateway API was completely offline globally",
+        "Payment api encryption certificates expired"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-004",
+      "category": "root_cause_guidance",
+      "question": "What is the primary root cause hypothesis for connection pool failure?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Database connection pool failure",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Deployment v2.8.1 introduced misconfigured connection pool limits",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Misconfigured pool limits led to rapid connection starvation",
+        "Deployment v2.8.1 is the primary suspected trigger"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Database corrupted filesystem tablespace",
+        "Malware compromised internal payment services"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-005",
+      "category": "symptom_lookup",
+      "question": "What observable metrics indicate database connection pool starvation?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Pool starvation symptoms",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-103",
+          "summary": "Connection wait time p99 exceeded 5000ms and active connections reached pool capacity",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Connection wait time p99 increased significantly",
+        "Active connections reached maximum capacity limits"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Kubernetes master nodes crashed",
+        "DNS resolution failed for internal cluster domains"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-006",
+      "category": "symptom_lookup",
+      "question": "What HTTP status codes and error responses occurred in Payment API?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Elevated 5xx error responses",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-104",
+          "summary": "HTTP 500 and 504 Gateway Timeout responses returned to upstream checkout callers",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "HTTP 500 and 504 status codes returned to upstream clients",
+        "Gateway timeout errors occurred during payment processing"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "HTTP 401 Unauthorized errors caused by revoked JWT secrets",
+        "HTTP 404 Not Found returned for missing payment endpoints"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-007",
+      "category": "symptom_lookup",
+      "question": "What symptoms distinguish pool exhaustion from slow SQL queries?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Pool exhaustion vs slow query discrimination",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-105",
+          "summary": "Pool wait time elevated while individual query execution duration remained normal once acquired",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Pool acquisition wait time was high while query execution duration remained normal",
+        "Symptoms point to connection availability rather than query execution performance"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Database deadlocks caused unrecoverable transaction rollbacks",
+        "CPU utilization on database replica hit 100 percent"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-008",
+      "category": "symptom_lookup",
+      "question": "Which payment endpoints exhibited degraded performance during pool timeouts?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Degraded endpoint symptoms",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-106",
+          "summary": "POST /v1/payments and POST /v1/charges showed 95th percentile latency spikes",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "POST payments and charges endpoints exhibited elevated latency",
+        "Transactional endpoints requiring database writes were primarily impacted"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Static asset CDN endpoints were completely unavailable",
+        "User authentication login endpoints crashed"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-009",
+      "category": "troubleshooting_procedure",
+      "question": "What immediate mitigation should be executed for Payment API pool timeouts?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Immediate incident mitigation",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Deployment v2.8.1 was rolled out 15 minutes prior to incident",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Roll back deployment v2.8.1 or increase connection pool capacity",
+        "Restart or scale payment-api instances after reverting pool configuration"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Reformat and repartition the production database storage volumes",
+        "Delete all database transaction tables to purge pending queries"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-010",
+      "category": "troubleshooting_procedure",
+      "question": "How should database connection health be verified following remediation?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Post-remediation health check",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-107",
+          "summary": "Healthcheck endpoint /health/ready tests database connectivity and pool utilization",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Verify readiness endpoint and monitor connection pool acquisition latency",
+        "Confirm active connection count stabilizes below maximum threshold"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Disable database encryption and SSL certificates to verify speed",
+        "Drop all database indexes to accelerate health check response"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-011",
+      "category": "troubleshooting_procedure",
+      "question": "What diagnostic commands or queries inspect Payment API database connection timeouts in PostgreSQL?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Database connection diagnostic procedure",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-108",
+          "summary": "Database administrator queried pg_stat_activity for client connection counts and states",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Query pg_stat_activity to inspect client connection states and counts",
+        "Examine waiting or idle in transaction client sessions"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Execute DROP DATABASE production CASCADE to terminate stuck clients",
+        "Kill operating system systemd init process"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-012",
+      "category": "troubleshooting_procedure",
+      "question": "What rollback steps are required for Payment API deployment if connection pool settings cannot be dynamically changed?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Rollback procedure execution",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Deployment v2.8.1 can be rolled back to stable release v2.8.0",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Roll back payment-api deployment to previous stable version 2.8.0",
+        "Validate connection pool metrics return to baseline levels"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Shut down all customer accounts during the rollback period",
+        "Reinstall operating system on payment worker nodes"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-013",
+      "category": "runbook_lookup",
+      "question": "What is the recommended maximum pool size in the Payment API runbook?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Runbook specification inquiry",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Payment API deployment v2.8.1 configured pool size below standard runbook baseline",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Runbook provides standard pool size and connection guidelines for Payment API",
+        "Connection settings should allocate sufficient connections to handle peak concurrency"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Runbook mandates setting connection pool size to zero",
+        "Runbook requires all transactions to bypass database persistence"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-014",
+      "category": "runbook_lookup",
+      "question": "What escalation path is specified in the Payment API database runbook?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Runbook escalation guidance",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-109",
+          "summary": "Database connectivity degradation ongoing for over 10 minutes",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Escalate to database administrator and on-call platform engineering team",
+        "Engage payment team lead if deployment rollback is required"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Escalate directly to external law enforcement authorities",
+        "Delete incident tickets to prevent public visibility"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-015",
+      "category": "runbook_lookup",
+      "question": "What alert thresholds trigger the Payment API database connection runbook?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Runbook alerting thresholds",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-110",
+          "summary": "Prometheus alert PaymentDbConnectionPoolHigh firing at 90 percent utilization",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Alert triggers when connection pool utilization exceeds high threshold",
+        "Latency or timeout errors trigger page to on-call engineer"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Alert triggers only when all physical hard drives are completely destroyed",
+        "Runbook alerts require manual smoke detector activation"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-016",
+      "category": "runbook_lookup",
+      "question": "What post-incident review action items are required by the Payment API database runbook?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Post-incident runbook procedures",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Incident root cause traced to configuration change in release v2.8.1",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Conduct post-mortem review analyzing deployment configuration validation",
+        "Add automated CI pipeline checks for connection pool parameters"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Permanently shut down all automated deployment systems forever",
+        "Prohibit all database changes in the future"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-017",
+      "category": "service_specific_lookup",
+      "question": "Why are users receiving HTTP 401 Unauthorized errors during authentication token verification in Authentication Service?",
+      "incident": {
+        "incident_id": 2,
+        "service_name": "authentication-service",
+        "title": "Auth Service token verification errors",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-201",
+          "summary": "Application logs show DatabaseConnectionTimeoutException connecting to the auth database during token validation",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Authentication service database connection timeouts occurred during token verification",
+        "Token validation failures and database timeouts resulted in elevated 401 Unauthorized errors"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "All customer accounts were permanently banned from the platform",
+        "Payment API database crashed and deleted order history"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-018",
+      "category": "service_specific_lookup",
+      "question": "What caused the checkout transaction failure and latency spike in Order Service?",
+      "incident": {
+        "incident_id": 3,
+        "service_name": "order-service",
+        "title": "Order Service checkout deadlock",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-301",
+          "summary": "DeadlockDetected exception occurred on order_items table during concurrent checkout placement",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Database deadlock detected in order_items table during checkout placement",
+        "Lock contention caused worker thread starvation and elevated checkout latency"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Payment gateway revoked merchant credentials globally",
+        "Order database filesystem corrupted tablespace"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-019",
+      "category": "service_specific_lookup",
+      "question": "What caused Redis cluster to reject application write commands with OOM errors?",
+      "incident": {
+        "incident_id": 4,
+        "service_name": "redis-cluster",
+        "title": "Redis cluster memory exhaustion",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-401",
+          "summary": "Redis command rejected with OOM command not allowed when used memory > maxmemory",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Redis memory utilization exceeded configured maxmemory limit",
+        "Cluster rejected write commands due to memory exhaustion under volatile-lru policy"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "PostgreSQL master database hard drives failed",
+        "Redis server hardware suffered physical motherboard fire"
+      ],
+      "user_id": 1,
+      "team_id": 2
+    },
+    {
+      "case_id": "ANS-020",
+      "category": "cross_document_disambiguation",
+      "question": "How should global PostgreSQL database connection pool saturation be diagnosed using pg_stat_activity?",
+      "incident": {
+        "incident_id": 5,
+        "service_name": "postgresql-primary",
+        "title": "Global database connection pool saturation",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-501",
+          "summary": "PostgreSQL returned FATAL: remaining connection slots are reserved for superuser connections",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Query pg_stat_activity to inspect client connections and idle in transaction sessions",
+        "Configure PgBouncer in transaction pooling mode to prevent connection starvation"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Execute redis-cli sentinel failover to recover PostgreSQL connections",
+        "Flush Redis token namespaces to fix relational database slots"
+      ],
+      "user_id": 1,
+      "team_id": 2
+    },
+    {
+      "case_id": "ANS-021",
+      "category": "service_specific_lookup",
+      "question": "Why are worker pods crashing repeatedly with exit code 137 in Kubernetes?",
+      "incident": {
+        "incident_id": 6,
+        "service_name": "kubernetes-cluster",
+        "title": "Kubernetes pod CrashLoopBackOff",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-601",
+          "summary": "Pod container terminated with exit code 137 and Reason OOMKilled",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Container was terminated with exit code 137 OOMKilled due to memory limits",
+        "Increase container memory limits and perform rolling restart of deployment"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "DNS cluster servers crashed globally",
+        "Reformat the host operating system drive"
+      ],
+      "user_id": 1,
+      "team_id": 5
+    },
+    {
+      "case_id": "ANS-022",
+      "category": "service_specific_lookup",
+      "question": "What conditions mandate an immediate software deployment rollback using kubectl rollout undo?",
+      "incident": {
+        "incident_id": 7,
+        "service_name": "platform-deployment",
+        "title": "Deployment rollback triggers",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-701",
+          "summary": "Post-deployment HTTP 5xx error rate increased by 2.4 percent above baseline within 15 minutes",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Execute deployment rollback using kubectl rollout undo or ArgoCD sync",
+        "Assess database schema migration backwards compatibility before rolling back"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Permanently delete all microservice repositories",
+        "Reboot all database primary servers"
+      ],
+      "user_id": 1,
+      "team_id": 5
+    },
+    {
+      "case_id": "ANS-023",
+      "category": "service_specific_lookup",
+      "question": "What emergency procedure must be followed when database credentials or API keys are leaked in logs?",
+      "incident": {
+        "incident_id": 8,
+        "service_name": "security-operations",
+        "title": "Leaked database credential containment",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-801",
+          "summary": "Production database password exposed in application debug log output",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Treat leaked credentials as SEV-1 security incident and revoke secret in Vault immediately",
+        "Rotate credentials across microservices and alter compromised database user in PostgreSQL"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Ignore the leak until scheduled quarterly credential rotation",
+        "Publish secret publicly on social media"
+      ],
+      "user_id": 1,
+      "team_id": 4
+    },
+    {
+      "case_id": "ANS-024",
+      "category": "service_specific_lookup",
+      "question": "What triggers automatic escalation of a SEV-2 operational disruption to SEV-1?",
+      "incident": {
+        "incident_id": 9,
+        "service_name": "incident-management",
+        "title": "Incident severity escalation governance",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-901",
+          "summary": "Checkout latency degradation ongoing without mitigation for over 15 minutes",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Escalate to SEV-1 if incident remains unmitigated after 15 minutes",
+        "Page Incident Commander and post status updates every 15 minutes"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Delete the incident ticket to prevent public visibility",
+        "Escalate incident directly to local police department"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-025",
+      "category": "postmortem_lookup",
+      "question": "What was the identified root cause in the September 2026 Payment API database timeout postmortem?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Postmortem INC-2026-09-PAY review",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Release v2.8.1 environment configuration set HikariCP pool max_size to 5 instead of 50",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Release v2.8.1 reduced connection pool max_size from 50 to 5",
+        "Pool exhaustion occurred under incoming transaction concurrency causing 42 minutes of downtime"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Database server ran out of disk space",
+        "Network switch hardware was struck by lightning"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-026",
+      "category": "postmortem_lookup",
+      "question": "What preventative action items were established in the postmortem to prevent future pool misconfigurations?",
+      "incident": {
+        "incident_id": 1,
+        "service_name": "payment-api",
+        "title": "Postmortem corrective action validation",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-201",
+          "summary": "Postmortem assigned CI configuration linting and canary gate improvements to Platform Team",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Add automated CI configuration linting to validate pool parameters against runbook baselines",
+        "Upgrade deployment pipeline with automated 10-minute canary evaluation stage"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Prohibit all future software releases permanently",
+        "Shut down automated deployment systems forever"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-027",
+      "category": "cross_document_disambiguation",
+      "question": "How does PgBouncer transaction pooling mode prevent database connection exhaustion in PostgreSQL?",
+      "incident": {
+        "incident_id": 5,
+        "service_name": "postgresql-primary",
+        "title": "PgBouncer pool mode evaluation",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-502",
+          "summary": "Microservices holding idle client sessions while waiting for network responses",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "PgBouncer transaction pooling mode allocates server connections only during active transaction execution",
+        "Prevents microservices from holding persistent idle connections"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Configure Redis maxmemory-policy allkeys-lru to pool PostgreSQL transactions",
+        "Execute redis-cli bigkeys to size relational databases"
+      ],
+      "user_id": 1,
+      "team_id": 2
+    },
+    {
+      "case_id": "ANS-028",
+      "category": "cross_document_disambiguation",
+      "question": "How should application heap limits be configured relative to Kubernetes container memory limits?",
+      "incident": {
+        "incident_id": 6,
+        "service_name": "kubernetes-cluster",
+        "title": "Container memory headroom sizing",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-602",
+          "summary": "JVM heap utilization approached container cgroup limit causing immediate pod SIGKILL",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Configure application heap limits to approximately 75 percent of container memory limit",
+        "Prevents container from being OOMKilled by Linux kernel cgroup enforcer"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Set container memory limit to zero",
+        "Disable operating system memory management entirely"
+      ],
+      "user_id": 1,
+      "team_id": 5
+    },
+    {
+      "case_id": "ANS-029",
+      "category": "cross_document_disambiguation",
+      "question": "Why must database migration compatibility be verified before executing kubectl rollout undo in deployment rollback?",
+      "incident": {
+        "incident_id": 7,
+        "service_name": "platform-deployment",
+        "title": "Rollback migration safety check",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "deployment",
+          "source_id": "dep-701",
+          "summary": "Recent release executed schema migrations modifying column definitions",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Verify whether recent release applied breaking schema changes like dropped columns or renamed tables",
+        "Blind container rollback against incompatible database schema will cause catastrophic application failures"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Execute DROP DATABASE CASCADE before rolling back",
+        "Database migrations never affect application rollbacks"
+      ],
+      "user_id": 1,
+      "team_id": 5
+    },
+    {
+      "case_id": "ANS-030",
+      "category": "cross_document_disambiguation",
+      "question": "What forensic telemetry must be preserved during a compromised secret security incident?",
+      "incident": {
+        "incident_id": 8,
+        "service_name": "security-operations",
+        "title": "Forensic evidence preservation protocol",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-802",
+          "summary": "Suspect IP addresses detected attempting queries with compromised service credential",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Preserve application access logs, WAF telemetry, and audit trail records before restarting instances",
+        "Inspect audit logs and query history for unauthorized data access or privilege escalation"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Wipe all operating system logs and audit tables immediately",
+        "Format suspect servers before investigation"
+      ],
+      "user_id": 1,
+      "team_id": 4
+    },
+    {
+      "case_id": "ANS-031",
+      "category": "cross_document_disambiguation",
+      "question": "What responsibilities and authorities belong to the Incident Commander during a major incident?",
+      "incident": {
+        "incident_id": 9,
+        "service_name": "incident-management",
+        "title": "Incident Commander authority definition",
+        "severity": "SEV-1"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-902",
+          "summary": "Cross-functional engineering leads convening on SEV-1 incident triage bridge",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Incident Commander leads the response and has final authority over mitigation decisions like rollbacks",
+        "Coordinates investigation tasks and ensures communications lead posts timely status updates"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Incident Commander is solely responsible for writing production code fixes during the outage",
+        "Incident Commander must obtain unanimous consent from all company employees"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    },
+    {
+      "case_id": "ANS-032",
+      "category": "cross_document_disambiguation",
+      "question": "What temporary mitigation decouples Order Service checkout requests from database lock contention?",
+      "incident": {
+        "incident_id": 3,
+        "service_name": "order-service",
+        "title": "Asynchronous checkout queuing mitigation",
+        "severity": "SEV-2"
+      },
+      "evidence": [
+        {
+          "source_type": "incident_event",
+          "source_id": "ev-302",
+          "summary": "Order submission queue buffering incoming checkout requests to relieve database locks",
+          "confidence": "HIGH"
+        }
+      ],
+      "expected_facts": [
+        "Temporarily enable asynchronous order submission queuing",
+        "Decouples checkout requests from immediate database persistence while resolving lock contention"
+      ],
+      "expected_citations": [
+        "KB-1"
+      ],
+      "forbidden_claims": [
+        "Delete all customer credit cards from the database",
+        "Permanently disable inventory checking forever"
+      ],
+      "user_id": 1,
+      "team_id": 1
+    }
+  ]
+}

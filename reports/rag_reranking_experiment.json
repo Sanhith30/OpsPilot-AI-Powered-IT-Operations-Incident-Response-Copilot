@@ -1,0 +1,48 @@
+{
+  "dataset_version": "2.0",
+  "score_threshold": 0.65,
+  "top_k": 5,
+  "embedding_model": "gemini-embedding-2",
+  "baseline": {
+    "name": "Pinecone Vector Search (Threshold 0.65)",
+    "positive_recall_at_5": 1.0,
+    "positive_precision_at_5": 0.3671,
+    "positive_mrr": 0.9868,
+    "document_metrics": {
+      "recall_at_5": 1.0,
+      "precision_at_5": 0.3671,
+      "mrr": 0.9868
+    },
+    "chunk_metrics": {
+      "recall_at_5": 1.0,
+      "precision_at_5": 0.4044,
+      "mrr": 0.9825
+    },
+    "unwanted_retrieval_rate": 0.0,
+    "clean_rejection_rate": 1.0,
+    "authorization_accuracy": 1.0,
+    "unauthorized_leakage_rate": 0.0,
+    "grounding_rate": 1.0
+  },
+  "reranked_experiment": {
+    "name": "Pinecone + Deterministic Lexical Reranker (Threshold 0.65)",
+    "positive_recall_at_5": 1.0,
+    "positive_precision_at_5": 0.3671,
+    "positive_mrr": 0.9868,
+    "document_metrics": {
+      "recall_at_5": 1.0,
+      "precision_at_5": 0.3671,
+      "mrr": 0.9868
+    },
+    "chunk_metrics": {
+      "recall_at_5": 1.0,
+      "precision_at_5": 0.4044,
+      "mrr": 0.9868
+    },
+    "unwanted_retrieval_rate": 0.0,
+    "clean_rejection_rate": 1.0,
+    "authorization_accuracy": 1.0,
+    "unauthorized_leakage_rate": 0.0,
+    "grounding_rate": 1.0
+  }
+}

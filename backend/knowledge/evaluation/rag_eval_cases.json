@@ -1,0 +1,977 @@
+{
+  "dataset_version": "2.0",
+  "description": "OpsPilot Multi-Document RAG Retrieval and Cross-Team Authorization Benchmark",
+  "cases": [
+    {
+      "case_id": "RAG-001",
+      "query": "What are the symptoms of database connection timeouts in Payment API?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "latency",
+        "5xx",
+        "timeout",
+        "failed payment"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Direct symptom inquiry for payment API database connection issues"
+    },
+    {
+      "case_id": "RAG-002",
+      "query": "Why is Payment API returning elevated 5xx error responses?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "5xx",
+        "database connections",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Error code symptom mapping to database timeouts"
+    },
+    {
+      "case_id": "RAG-003",
+      "query": "Payment service request latency increased significantly and transactions fail",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "latency",
+        "transactions",
+        "fail"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Latency degradation symptom lookup"
+    },
+    {
+      "case_id": "RAG-004",
+      "query": "What errors indicate payment database connection pool exhaustion?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "connection pool",
+        "exhausted",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Pool exhaustion symptom query"
+    },
+    {
+      "case_id": "RAG-005",
+      "query": "What is the root cause of database timeout errors following a payment release?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "deployment",
+        "release",
+        "connection pool",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Investigating post-deployment root causes"
+    },
+    {
+      "case_id": "RAG-006",
+      "query": "How to check if connection pool exhaustion caused payment failures?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "application logs",
+        "pool",
+        "exhausted"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Log and metric inspection for root cause"
+    },
+    {
+      "case_id": "RAG-007",
+      "query": "Did the latest production deployment trigger the database connection drop?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "recent deployments",
+        "new release",
+        "failures"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Deployment correlation guidance"
+    },
+    {
+      "case_id": "RAG-008",
+      "query": "What logs should be examined when payment transactions time out?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "application logs",
+        "timeout messages"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Log analysis direction"
+    },
+    {
+      "case_id": "RAG-009",
+      "query": "What are the troubleshooting steps for payment database timeouts?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "investigation",
+        "mitigation",
+        "availability"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "General troubleshooting procedure request"
+    },
+    {
+      "case_id": "RAG-010",
+      "query": "How do I mitigate database connection timeouts in Payment API?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "mitigation",
+        "rollback",
+        "availability"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Mitigation steps retrieval"
+    },
+    {
+      "case_id": "RAG-011",
+      "query": "How to verify that payment database timeouts have been resolved?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "verification",
+        "error rate",
+        "normal operating range"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Verification steps inquiry"
+    },
+    {
+      "case_id": "RAG-012",
+      "query": "Step by step procedure to roll back deployment when database fails",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "rollback procedure",
+        "production deployment"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Rollback procedure recommendation lookup"
+    },
+    {
+      "case_id": "RAG-013",
+      "query": "Payment API database timeouts runbook",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "payment api",
+        "database timeouts"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Direct runbook name query"
+    },
+    {
+      "case_id": "RAG-014",
+      "query": "Find runbook for payment service 5xx connection errors",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "payment",
+        "runbook",
+        "5xx"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Keyword runbook search"
+    },
+    {
+      "case_id": "RAG-015",
+      "query": "SOP for payment gateway database latency spike",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "payment",
+        "database",
+        "latency"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Standard operating procedure lookup"
+    },
+    {
+      "case_id": "RAG-016",
+      "query": "Documentation on verifying payment API recovery",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "verification",
+        "recovery",
+        "payment"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Verification section lookup"
+    },
+    {
+      "case_id": "RAG-017",
+      "query": "What is the cafeteria lunch menu for Friday?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Out of domain non-technical query"
+    },
+    {
+      "case_id": "RAG-018",
+      "query": "How to write a poem about autumn leaves?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Completely unrelated general query"
+    },
+    {
+      "case_id": "RAG-019",
+      "query": "What are the rules of tennis doubles tournament?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Sports knowledge out of IT operations domain"
+    },
+    {
+      "case_id": "RAG-020",
+      "query": "it failed",
+      "category": "ambiguous_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Under-specified 2-word ambiguous failure query"
+    },
+    {
+      "case_id": "RAG-021",
+      "query": "error in system",
+      "category": "ambiguous_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Generic non-specific system error query"
+    },
+    {
+      "case_id": "RAG-022",
+      "query": "How to tune Cassandra gossip protocol and memtable flush thresholds?",
+      "category": "no_answer_query",
+      "expected_documents": [],
+      "expected_keywords": [
+        "cassandra",
+        "gossip"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Technical IT query for technology not covered in knowledge base"
+    },
+    {
+      "case_id": "RAG-023",
+      "query": "Payment API database connection timeouts troubleshooting for Payments team member",
+      "category": "authorization_control",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "payment",
+        "database",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Authorized retrieval: User 1 is member of Payments Team (team_id=1)"
+    },
+    {
+      "case_id": "RAG-024",
+      "query": "Database connection pool exhaustion internal runbook",
+      "category": "authorization_control",
+      "expected_documents": [
+        "database-team-internal-runbook.md"
+      ],
+      "expected_keywords": [
+        "database",
+        "pool"
+      ],
+      "user_id": 3,
+      "team_id": 3,
+      "expected_access": "DENIED",
+      "notes": "Unauthorized retrieval: User 3 (Infrastructure Team) attempting to access team-restricted document owned by Database Team"
+    },
+    {
+      "case_id": "RAG-025",
+      "query": "Security team credentials rotation and audit policy",
+      "category": "authorization_control",
+      "expected_documents": [
+        "security-incident-playbook.md"
+      ],
+      "expected_keywords": [
+        "credential",
+        "rotation"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "DENIED",
+      "notes": "Unauthorized retrieval: User 2 (Database Team) attempting to access security-team restricted document"
+    },
+    {
+      "case_id": "RAG-026",
+      "query": "What are the symptoms and investigation steps for authentication service token validation errors?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "runbooks/authentication-service-token-errors.md"
+      ],
+      "expected_keywords": [
+        "JWT",
+        "token validation",
+        "401 Unauthorized",
+        "signing key"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Authentication service token validation and auth db investigation"
+    },
+    {
+      "case_id": "RAG-027",
+      "query": "How to investigate Redis cluster maxmemory exhaustion and command timeouts?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "runbooks/redis-cache-failures.md"
+      ],
+      "expected_keywords": [
+        "maxmemory",
+        "used_memory",
+        "volatile-lru",
+        "sentinel failover"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "ALLOWED",
+      "notes": "Redis cache memory and eviction investigation"
+    },
+    {
+      "case_id": "RAG-028",
+      "query": "What causes database deadlock errors on order_items table during checkout in Order Service?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "runbooks/order-service-latency.md"
+      ],
+      "expected_keywords": [
+        "deadlock",
+        "order_items",
+        "checkout",
+        "pg_terminate_backend"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Order service checkout transaction deadlock triage"
+    },
+    {
+      "case_id": "RAG-029",
+      "query": "What is the recovery procedure when Kubernetes pods are terminated with OOMKilled exit code 137?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "operations/kubernetes-pod-restart-procedure.md"
+      ],
+      "expected_keywords": [
+        "OOMKilled",
+        "exit code 137",
+        "limits.memory",
+        "CrashLoopBackOff"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Kubernetes pod crash and memory limit restart procedure"
+    },
+    {
+      "case_id": "RAG-030",
+      "query": "How to query pg_stat_activity to inspect client connection states and PgBouncer pool limits?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "operations/postgresql-connection-pool-guide.md"
+      ],
+      "expected_keywords": [
+        "pg_stat_activity",
+        "max_connections",
+        "pgbouncer",
+        "idle in transaction"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "ALLOWED",
+      "notes": "PostgreSQL global connection pool and PgBouncer guide"
+    },
+    {
+      "case_id": "RAG-031",
+      "query": "What mandatory triggers require an immediate production deployment rollback?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "sops/deployment-rollback-sop.md"
+      ],
+      "expected_keywords": [
+        "rollback",
+        "kubectl rollout undo",
+        "error rate",
+        "canary"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Production deployment rollback SOP"
+    },
+    {
+      "case_id": "RAG-032",
+      "query": "What is the emergency containment protocol for leaked database passwords or API keys?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "sops/security-incident-sop.md"
+      ],
+      "expected_keywords": [
+        "compromised",
+        "revoke",
+        "Vault",
+        "credentials",
+        "SEV-1"
+      ],
+      "user_id": 4,
+      "team_id": 4,
+      "expected_access": "ALLOWED",
+      "notes": "Security incident response and secret revocation SOP"
+    },
+    {
+      "case_id": "RAG-033",
+      "query": "What are the escalation triggers and communication intervals for declaring a SEV-1 incident?",
+      "category": "service_specific_lookup",
+      "expected_documents": [
+        "sops/incident-escalation-sop.md"
+      ],
+      "expected_keywords": [
+        "SEV-1",
+        "Incident Commander",
+        "15 minutes",
+        "escalation"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Incident severity and escalation management SOP"
+    },
+    {
+      "case_id": "RAG-034",
+      "query": "How do I troubleshoot connection pool exhaustion in the Payment API?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "expected_keywords": [
+        "Payment API",
+        "database connection",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates Payment API runbook from PostgreSQL global guide"
+    },
+    {
+      "case_id": "RAG-035",
+      "query": "How to configure global PgBouncer connection pool sizing and server client limits in PostgreSQL?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "operations/postgresql-connection-pool-guide.md"
+      ],
+      "expected_keywords": [
+        "pgbouncer",
+        "max_connections",
+        "pg_stat_activity"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates PostgreSQL cluster guide from individual service runbooks"
+    },
+    {
+      "case_id": "RAG-036",
+      "query": "What should be done when Redis connection pool or memory cache times out?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "runbooks/redis-cache-failures.md"
+      ],
+      "expected_keywords": [
+        "Redis",
+        "maxmemory",
+        "eviction",
+        "timeout"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates Redis connection timeouts from relational database timeouts"
+    },
+    {
+      "case_id": "RAG-037",
+      "query": "Why is authentication service throwing database connection timeouts during login token verification?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "runbooks/authentication-service-token-errors.md"
+      ],
+      "expected_keywords": [
+        "Authentication Service",
+        "token",
+        "401",
+        "timeout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates Authentication service timeouts from Payment API timeouts"
+    },
+    {
+      "case_id": "RAG-038",
+      "query": "What caused the September 2026 Payment API database timeout incident and release v2.8.1 pool failure?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "postmortems/payment-api-2026-09-timeout.md"
+      ],
+      "expected_keywords": [
+        "INC-2026-09-PAY",
+        "v2.8.1",
+        "pool.max_size",
+        "42 minutes"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates historical postmortem from operational runbook"
+    },
+    {
+      "case_id": "RAG-039",
+      "query": "What is the procedure to rollback a failed production deployment using kubectl rollout undo?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "sops/deployment-rollback-sop.md"
+      ],
+      "expected_keywords": [
+        "rollout undo",
+        "kubectl",
+        "rollback",
+        "schema migrations"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates global rollback SOP from service-specific runbook references"
+    },
+    {
+      "case_id": "RAG-040",
+      "query": "How to resolve database deadlocks and lock contention during checkout orders in Order Service?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "runbooks/order-service-latency.md"
+      ],
+      "expected_keywords": [
+        "Order Service",
+        "deadlock",
+        "orders",
+        "checkout"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates Order service transaction deadlocks from connection pool exhaustion"
+    },
+    {
+      "case_id": "RAG-041",
+      "query": "What are the remediation steps when pods are terminated with OOMKilled exit code 137 in Kubernetes?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "operations/kubernetes-pod-restart-procedure.md"
+      ],
+      "expected_keywords": [
+        "OOMKilled",
+        "137",
+        "CrashLoopBackOff",
+        "kubectl"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates pod container memory restart procedure from Redis memory eviction"
+    },
+    {
+      "case_id": "RAG-042",
+      "query": "What is the protocol when database credentials or API keys are leaked publicly?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "sops/security-incident-sop.md"
+      ],
+      "expected_keywords": [
+        "compromised",
+        "credentials",
+        "Vault",
+        "revocation"
+      ],
+      "user_id": 4,
+      "team_id": 4,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates security secret revocation from standard incident escalation"
+    },
+    {
+      "case_id": "RAG-043",
+      "query": "What are the escalation triggers and timelines for declaring an unmitigated SEV-1 incident?",
+      "category": "cross_document_disambiguation",
+      "expected_documents": [
+        "sops/incident-escalation-sop.md"
+      ],
+      "expected_keywords": [
+        "SEV-1",
+        "15 minutes",
+        "Incident Commander"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Disambiguates incident escalation governance from deployment rollback SOP"
+    },
+    {
+      "case_id": "RAG-044",
+      "query": "What postmortem lessons were learned from the payment release v2.8.1 outage in September 2026?",
+      "category": "postmortem_lookup",
+      "expected_documents": [
+        "postmortems/payment-api-2026-09-timeout.md"
+      ],
+      "expected_keywords": [
+        "HikariCP",
+        "v2.8.1",
+        "CI Configuration Linting"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Historical postmortem findings lookup"
+    },
+    {
+      "case_id": "RAG-045",
+      "query": "What corrective action items were assigned to Platform Team after the HikariCP pool outage?",
+      "category": "postmortem_lookup",
+      "expected_documents": [
+        "postmortems/payment-api-2026-09-timeout.md"
+      ],
+      "expected_keywords": [
+        "Platform Team",
+        "CI Configuration Linting",
+        "Canary Analysis Gate"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "Postmortem action items and team ownership"
+    },
+    {
+      "case_id": "RAG-046",
+      "query": "What pre-rollback safety checks must be performed regarding database migrations?",
+      "category": "deployment_correlation",
+      "expected_documents": [
+        "sops/deployment-rollback-sop.md"
+      ],
+      "expected_keywords": [
+        "schema migrations",
+        "backwards-compatible",
+        "rollback"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Deployment rollback database migration pre-conditions"
+    },
+    {
+      "case_id": "RAG-047",
+      "query": "What canary failure conditions trigger an immediate software deployment rollback?",
+      "category": "deployment_correlation",
+      "expected_documents": [
+        "sops/deployment-rollback-sop.md"
+      ],
+      "expected_keywords": [
+        "canary",
+        "error rate",
+        "latency",
+        "rollback"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "Canary abort and deployment failure criteria"
+    },
+    {
+      "case_id": "RAG-048",
+      "query": "What is the procedure for revoking compromised secrets and rotating credentials in Vault?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "sops/security-incident-sop.md"
+      ],
+      "expected_keywords": [
+        "compromised",
+        "Vault",
+        "credentials"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "User from Team 1 (Payments) denied access to Team 4 (Security) SOP"
+    },
+    {
+      "case_id": "RAG-049",
+      "query": "What is the procedure for revoking compromised secrets and rotating credentials in Vault?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "sops/security-incident-sop.md"
+      ],
+      "expected_keywords": [
+        "compromised",
+        "Vault",
+        "credentials"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "DENIED",
+      "notes": "User from Team 2 (Database) denied access to Team 4 (Security) SOP"
+    },
+    {
+      "case_id": "RAG-050",
+      "query": "What is the procedure for revoking compromised secrets and rotating credentials in Vault?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "sops/security-incident-sop.md"
+      ],
+      "expected_keywords": [
+        "compromised",
+        "Vault",
+        "credentials"
+      ],
+      "user_id": 4,
+      "team_id": 4,
+      "expected_access": "ALLOWED",
+      "notes": "User from Team 4 (Security) successfully accesses Security SOP"
+    },
+    {
+      "case_id": "RAG-051",
+      "query": "How to investigate Redis cluster maxmemory exhaustion and sentinel failover?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "runbooks/redis-cache-failures.md"
+      ],
+      "expected_keywords": [
+        "maxmemory",
+        "sentinel"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "User from Team 1 (Payments) denied access to Team 2 (Database) Redis runbook"
+    },
+    {
+      "case_id": "RAG-052",
+      "query": "How to investigate Redis cluster maxmemory exhaustion and sentinel failover?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "runbooks/redis-cache-failures.md"
+      ],
+      "expected_keywords": [
+        "maxmemory",
+        "sentinel"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "ALLOWED",
+      "notes": "User from Team 2 (Database) successfully accesses Redis runbook"
+    },
+    {
+      "case_id": "RAG-053",
+      "query": "What is the recovery procedure when Kubernetes pods are terminated with OOMKilled exit code 137?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "operations/kubernetes-pod-restart-procedure.md"
+      ],
+      "expected_keywords": [
+        "OOMKilled",
+        "137"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "User from Team 1 (Payments) denied access to Team 5 (Platform) Kubernetes operations"
+    },
+    {
+      "case_id": "RAG-054",
+      "query": "What is the recovery procedure when Kubernetes pods are terminated with OOMKilled exit code 137?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "operations/kubernetes-pod-restart-procedure.md"
+      ],
+      "expected_keywords": [
+        "OOMKilled",
+        "137"
+      ],
+      "user_id": 5,
+      "team_id": 5,
+      "expected_access": "ALLOWED",
+      "notes": "User from Team 5 (Platform) successfully accesses Kubernetes operations"
+    },
+    {
+      "case_id": "RAG-055",
+      "query": "How to investigate order checkout latency and database deadlock contention?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "runbooks/order-service-latency.md"
+      ],
+      "expected_keywords": [
+        "deadlock",
+        "order_items"
+      ],
+      "user_id": 2,
+      "team_id": 2,
+      "expected_access": "DENIED",
+      "notes": "User from Team 2 (Database) denied access to Team 1 (Payments) Order runbook"
+    },
+    {
+      "case_id": "RAG-056",
+      "query": "How to investigate order checkout latency and database deadlock contention?",
+      "category": "authorization_control",
+      "expected_documents": [
+        "runbooks/order-service-latency.md"
+      ],
+      "expected_keywords": [
+        "deadlock",
+        "order_items"
+      ],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "ALLOWED",
+      "notes": "User from Team 1 (Payments) successfully accesses Order runbook"
+    },
+    {
+      "case_id": "RAG-057",
+      "query": "How to bake a chocolate fudge cake in an induction microwave oven?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "Culinary recipe negative control query"
+    },
+    {
+      "case_id": "RAG-058",
+      "query": "What is the current stock market share price of Microsoft on NASDAQ?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "Financial equity pricing negative control query"
+    },
+    {
+      "case_id": "RAG-059",
+      "query": "Explain macroscopic quantum superposition in superconducting transmon qubits",
+      "category": "no_answer_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "Quantum physics negative control query"
+    },
+    {
+      "case_id": "RAG-060",
+      "query": "The system is very slow today please fix it immediately",
+      "category": "ambiguous_query",
+      "expected_documents": [],
+      "expected_keywords": [],
+      "user_id": 1,
+      "team_id": 1,
+      "expected_access": "DENIED",
+      "notes": "Uninformative ambiguous operational statement"
+    }
+  ]
+}

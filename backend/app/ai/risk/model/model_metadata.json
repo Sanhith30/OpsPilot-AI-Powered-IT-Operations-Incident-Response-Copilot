@@ -1,0 +1,89 @@
+{
+  "model_name": "incident_risk_rf_v1",
+  "model_version": "1.1.0",
+  "model_type": "Regularized Random Forest + Platt Calibration",
+  "feature_names": [
+    "severity_score",
+    "status_score",
+    "severity_status_signal",
+    "event_count",
+    "timeout_count",
+    "error_count",
+    "db_failure_count",
+    "deployment_event_count",
+    "has_recent_deployment",
+    "avg_error_rate",
+    "max_error_rate",
+    "affected_service_count",
+    "avg_event_weight",
+    "total_event_weight"
+  ],
+  "classes": [
+    "LOW",
+    "MEDIUM",
+    "HIGH"
+  ],
+  "class_distribution": {
+    "LOW": 641,
+    "MEDIUM": 576,
+    "HIGH": 283
+  },
+  "training_samples": 1200,
+  "holdout_test_samples": 300,
+  "cv_f1_macro_mean": 0.9550493795973182,
+  "cv_f1_macro_std": 0.008992197021139863,
+  "holdout_macro_f1": 0.9512872961929593,
+  "holdout_weighted_f1": 0.9468687780750404,
+  "holdout_roc_auc": 0.9911622506722004,
+  "confusion_matrix": [
+    [
+      119,
+      9,
+      0
+    ],
+    [
+      4,
+      110,
+      1
+    ],
+    [
+      0,
+      2,
+      55
+    ]
+  ],
+  "per_class_metrics": {
+    "LOW": {
+      "precision": 0.967479674796748,
+      "recall": 0.9296875,
+      "f1": 0.9482071713147411
+    },
+    "MEDIUM": {
+      "precision": 0.9090909090909091,
+      "recall": 0.9565217391304348,
+      "f1": 0.9322033898305084
+    },
+    "HIGH": {
+      "precision": 0.9821428571428571,
+      "recall": 0.9649122807017544,
+      "f1": 0.9734513274336283
+    }
+  },
+  "feature_importances": {
+    "severity_status_signal": 0.19757202420785466,
+    "avg_event_weight": 0.18648010413338442,
+    "status_score": 0.15568294182928621,
+    "db_failure_count": 0.12954363389503232,
+    "max_error_rate": 0.10127099758783498,
+    "avg_error_rate": 0.0904330447812526,
+    "total_event_weight": 0.04537073873986489,
+    "error_count": 0.044442027671544516,
+    "timeout_count": 0.017484114160006472,
+    "severity_score": 0.016334707584727493,
+    "event_count": 0.006948511047148511,
+    "affected_service_count": 0.0047186670673064245,
+    "has_recent_deployment": 0.0018868150386017334,
+    "deployment_event_count": 0.0018316722561548884
+  },
+  "cv_accuracy_mean": 0.9550493795973182
+}

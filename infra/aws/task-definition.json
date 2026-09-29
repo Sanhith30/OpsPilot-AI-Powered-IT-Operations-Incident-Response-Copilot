@@ -1,0 +1,53 @@
+{
+  "family": "opspilot-production-app",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::123456789012:role/opspilot-production-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::123456789012:role/opspilot-production-ecs-task-role",
+  "containerDefinitions": [
+    {
+      "name": "opspilot-backend",
+      "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/opspilot-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "APP_ENV", "value": "production" },
+        { "name": "LOG_LEVEL", "value": "INFO" },
+        { "name": "PINECONE_INDEX_NAME", "value": "opspilot-knowledge" }
+      ],
+      "secrets": [
+        {
+          "name": "DB_CREDENTIALS",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:123456789012:secret:opspilot/production/database"
+        },
+        {
+          "name": "APP_SECRETS",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:123456789012:secret:opspilot/production/app-secrets"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/opspilot-production",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "backend"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 15
+      }
+    }
+  ]
+}

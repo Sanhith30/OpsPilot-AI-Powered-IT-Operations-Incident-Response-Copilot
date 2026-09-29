@@ -1,0 +1,617 @@
+{
+  "evaluation_timestamp": "2026-09-27T17:58:21.658351+00:00",
+  "dataset_version": "1.0",
+  "total_cases": 25,
+  "top_k": 5,
+  "retrieval_threshold": 0.35,
+  "embedding_model": "gemini-embedding-2",
+  "embedding_dimensions": 1536,
+  "positive_cases": {
+    "count": 16,
+    "recall_at_k": 1.0,
+    "precision_at_k": 1.0,
+    "mrr": 1.0
+  },
+  "negative_controls": {
+    "count": 6,
+    "unwanted_retrieval_rate": 1.0,
+    "clean_rejection_rate": 0.0
+  },
+  "authorization_cases": {
+    "count": 3,
+    "authorization_accuracy": 1.0,
+    "unauthorized_leakage_rate": 0.0
+  },
+  "grounding": {
+    "citation_grounding_rate": 1.0
+  },
+  "category_metrics": {
+    "symptom_lookup": {
+      "case_count": 4,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "unwanted_retrieval_rate": null,
+      "clean_rejection_rate": null,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "root_cause_guidance": {
+      "case_count": 4,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "unwanted_retrieval_rate": null,
+      "clean_rejection_rate": null,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "troubleshooting_procedure": {
+      "case_count": 4,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "unwanted_retrieval_rate": null,
+      "clean_rejection_rate": null,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "runbook_lookup": {
+      "case_count": 4,
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "mrr": 1.0,
+      "unwanted_retrieval_rate": null,
+      "clean_rejection_rate": null,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "irrelevant_query": {
+      "case_count": 3,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "mrr": null,
+      "unwanted_retrieval_rate": 1.0,
+      "clean_rejection_rate": 0.0,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "ambiguous_query": {
+      "case_count": 2,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "mrr": null,
+      "unwanted_retrieval_rate": 1.0,
+      "clean_rejection_rate": 0.0,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "no_answer_query": {
+      "case_count": 1,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "mrr": null,
+      "unwanted_retrieval_rate": 1.0,
+      "clean_rejection_rate": 0.0,
+      "authorization_accuracy": null,
+      "unauthorized_leakage_rate": null
+    },
+    "authorization_control": {
+      "case_count": 3,
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "mrr": null,
+      "unwanted_retrieval_rate": null,
+      "clean_rejection_rate": null,
+      "authorization_accuracy": 1.0,
+      "unauthorized_leakage_rate": 0.0
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "RAG-001",
+      "query": "What are the symptoms of database connection timeouts in Payment API?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "latency",
+        "5xx",
+        "timeout",
+        "failed payment"
+      ]
+    },
+    {
+      "case_id": "RAG-002",
+      "query": "Why is Payment API returning elevated 5xx error responses?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "5xx",
+        "database connections",
+        "timeout"
+      ]
+    },
+    {
+      "case_id": "RAG-003",
+      "query": "Payment service request latency increased significantly and transactions fail",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "latency",
+        "fail"
+      ]
+    },
+    {
+      "case_id": "RAG-004",
+      "query": "What errors indicate payment database connection pool exhaustion?",
+      "category": "symptom_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "connection pool",
+        "exhausted",
+        "timeout"
+      ]
+    },
+    {
+      "case_id": "RAG-005",
+      "query": "What is the root cause of database timeout errors following a payment release?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "deployment",
+        "release",
+        "connection pool",
+        "timeout"
+      ]
+    },
+    {
+      "case_id": "RAG-006",
+      "query": "How to check if connection pool exhaustion caused payment failures?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "application logs",
+        "pool",
+        "exhausted"
+      ]
+    },
+    {
+      "case_id": "RAG-007",
+      "query": "Did the latest production deployment trigger the database connection drop?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "recent deployments",
+        "new release",
+        "failures"
+      ]
+    },
+    {
+      "case_id": "RAG-008",
+      "query": "What logs should be examined when payment transactions time out?",
+      "category": "root_cause_guidance",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "application logs",
+        "timeout messages"
+      ]
+    },
+    {
+      "case_id": "RAG-009",
+      "query": "What are the troubleshooting steps for payment database timeouts?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "investigation",
+        "mitigation",
+        "availability"
+      ]
+    },
+    {
+      "case_id": "RAG-010",
+      "query": "How do I mitigate database connection timeouts in Payment API?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "mitigation",
+        "rollback",
+        "availability"
+      ]
+    },
+    {
+      "case_id": "RAG-011",
+      "query": "How to verify that payment database timeouts have been resolved?",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "verification",
+        "error rate",
+        "normal operating range"
+      ]
+    },
+    {
+      "case_id": "RAG-012",
+      "query": "Step by step procedure to roll back deployment when database fails",
+      "category": "troubleshooting_procedure",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "rollback procedure",
+        "production deployment"
+      ]
+    },
+    {
+      "case_id": "RAG-013",
+      "query": "Payment API database timeouts runbook",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "payment api",
+        "database timeouts"
+      ]
+    },
+    {
+      "case_id": "RAG-014",
+      "query": "Find runbook for payment service 5xx connection errors",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "payment",
+        "5xx"
+      ]
+    },
+    {
+      "case_id": "RAG-015",
+      "query": "SOP for payment gateway database latency spike",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "payment",
+        "database",
+        "latency"
+      ]
+    },
+    {
+      "case_id": "RAG-016",
+      "query": "Documentation on verifying payment API recovery",
+      "category": "runbook_lookup",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": [
+        "verification",
+        "payment"
+      ]
+    },
+    {
+      "case_id": "RAG-017",
+      "query": "What is the cafeteria lunch menu for Friday?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-018",
+      "query": "How to write a poem about autumn leaves?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-019",
+      "query": "What are the rules of tennis doubles tournament?",
+      "category": "irrelevant_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-020",
+      "query": "it failed",
+      "category": "ambiguous_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-021",
+      "query": "error in system",
+      "category": "ambiguous_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-022",
+      "query": "How to tune Cassandra gossip protocol and memtable flush thresholds?",
+      "category": "no_answer_query",
+      "expected_documents": [],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": null,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": true,
+      "expected_access": "ALLOWED",
+      "access_passed": null,
+      "keywords_found": []
+    },
+    {
+      "case_id": "RAG-023",
+      "query": "Payment API database connection timeouts troubleshooting for Payments team member",
+      "category": "authorization_control",
+      "expected_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": null,
+      "expected_access": "ALLOWED",
+      "access_passed": true,
+      "keywords_found": [
+        "payment",
+        "database",
+        "timeout"
+      ]
+    },
+    {
+      "case_id": "RAG-024",
+      "query": "Database connection pool exhaustion internal runbook",
+      "category": "authorization_control",
+      "expected_documents": [
+        "database-team-internal-runbook.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 0.0,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": null,
+      "expected_access": "DENIED",
+      "access_passed": true,
+      "keywords_found": [
+        "database",
+        "pool"
+      ]
+    },
+    {
+      "case_id": "RAG-025",
+      "query": "Security team credentials rotation and audit policy",
+      "category": "authorization_control",
+      "expected_documents": [
+        "security-incident-playbook.md"
+      ],
+      "retrieved_documents": [
+        "payment-api-database-timeouts.md"
+      ],
+      "recall_at_k": 0.0,
+      "precision_at_k": null,
+      "reciprocal_rank": null,
+      "unwanted_retrieval": null,
+      "expected_access": "DENIED",
+      "access_passed": true,
+      "keywords_found": []
+    }
+  ]
+}

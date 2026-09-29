@@ -1,0 +1,122 @@
+name: OpsPilot CD - AWS ECS Deployment & Automated Rollback
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "production"
+
+env:
+  AWS_REGION: us-east-1
+  ECR_BACKEND_REPO: opspilot-backend
+  ECR_FRONTEND_REPO: opspilot-frontend
+  ECS_CLUSTER: opspilot-production-cluster
+  ECS_SERVICE: opspilot-production-service
+  ECS_TASK_DEFINITION: opspilot-production-app
+
+jobs:
+  deploy:
+    name: Build, Deploy & Verify
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python for deployment scripts
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Deployment CLI Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install httpx boto3
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOYMENT_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag & Push Backend Image
+        id: build-backend
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f backend/Dockerfile -t $ECR_REGISTRY/$ECR_BACKEND_REPO:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_BACKEND_REPO:latest .
+          docker push $ECR_REGISTRY/$ECR_BACKEND_REPO:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_BACKEND_REPO:latest
+          echo "backend_image=$ECR_REGISTRY/$ECR_BACKEND_REPO:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Build, Tag & Push Frontend Image
+        id: build-frontend
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f frontend/Dockerfile -t $ECR_REGISTRY/$ECR_FRONTEND_REPO:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_FRONTEND_REPO:latest ./frontend
+          docker push $ECR_REGISTRY/$ECR_FRONTEND_REPO:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_FRONTEND_REPO:latest
+
+      - name: Run Database Schema Migrations
+        env:
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+        run: |
+          python scripts/run_migrations.py
+
+      - name: Get Current Stable ECS Task Definition (Rollback Anchor)
+        id: pre-deploy-anchor
+        run: |
+          CURRENT_TASK_DEF=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE --query "services[0].taskDefinition" --output text)
+          echo "previous_task_def=$CURRENT_TASK_DEF" >> $GITHUB_OUTPUT
+          echo "Previous stable Task Definition: $CURRENT_TASK_DEF"
+
+      - name: Render New ECS Task Definition
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: infra/aws/task-definition.json
+          container-name: opspilot-backend
+          image: ${{ steps.build-backend.outputs.backend_image }}
+
+      - name: Deploy to Amazon ECS (Zero-downtime rolling update)
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Post-Deployment Smoke Test & Verification
+        id: smoke-test
+        env:
+          APP_BASE_URL: ${{ secrets.PRODUCTION_ALB_URL }}
+        run: |
+          python scripts/deploy_verify.py --url "$APP_BASE_URL" --retries 10 --delay 10
+
+      # ========================================================================
+      # Automated Rollback on Smoke Test Failure
+      # ========================================================================
+      - name: Automated Rollback on Deployment Failure
+        if: failure() && steps.smoke-test.outcome == 'failure'
+        env:
+          PREVIOUS_TASK_DEF: ${{ steps.pre-deploy-anchor.outputs.previous_task_def }}
+        run: |
+          echo "::error::Deployment verification failed! Initiating automated rollback to: $PREVIOUS_TASK_DEF"
+          python scripts/rollback_ecs.py \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --target-task-def "$PREVIOUS_TASK_DEF"
