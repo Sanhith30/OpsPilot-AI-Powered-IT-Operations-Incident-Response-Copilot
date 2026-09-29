@@ -38,7 +38,7 @@ export function AuditPage() {
 
         <div style={{ display: 'flex', gap: '10px' }}>
           <a
-            href="http://127.0.0.1:8000/metrics"
+            href="/metrics"
             target="_blank"
             rel="noreferrer"
             className="btn btn-secondary"
