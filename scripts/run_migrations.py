@@ -2,73 +2,150 @@
 """
 OpsPilot Production Database Migration Runner
 Applies sequential SQL migrations from db/migrations/ in an idempotent,
-audited manner using psycopg directly.
+audited manner using psycopg directly with separate connection arguments.
 """
 
 from __future__ import annotations
 
 import os
 import sys
+import urllib.parse
 from pathlib import Path
+from typing import Any
 
 import psycopg
 
 
-def _to_psycopg_conninfo(database_url: str) -> str:
+def parse_database_url(url: str) -> dict[str, Any]:
     """
-    Convert a DATABASE_URL to a psycopg conninfo string.
-    Ensures passwords with special characters (such as '@') are properly encoded.
+    Parse a PostgreSQL database URL into separate connection parameters.
+    Handles unescaped or escaped '@' in passwords safely by recognizing that host
+    names and ports cannot contain '@', splitting userinfo and hostinfo from the right.
     """
-    import urllib.parse
+    cleaned_url = url
+    for prefix in ("postgresql+psycopg://", "postgresql://", "postgres://"):
+        if cleaned_url.startswith(prefix):
+            cleaned_url = cleaned_url[len(prefix):]
+            break
 
-    for prefix in (
-        "postgresql+psycopg://",
-        "postgresql://",
-        "postgres://",
-    ):
-        if database_url.startswith(prefix):
-            remainder = database_url[len(prefix):]
-            if "@" in remainder:
-                userinfo, hostinfo = remainder.rsplit("@", 1)
-                if ":" in userinfo:
-                    u, p = userinfo.split(":", 1)
-                    p_clean = urllib.parse.unquote(p)
-                    return f"postgresql://{u}:{urllib.parse.quote_plus(p_clean)}@{hostinfo}"
-            return "postgresql://" + remainder
-    return database_url
+    # Extract query params if any
+    if "?" in cleaned_url:
+        cleaned_url, _ = cleaned_url.split("?", 1)
 
+    # Separate dbname from user:pass@host:port
+    remainder, sep, dbname = cleaned_url.rpartition("/")
+    if not sep:
+        remainder = dbname
+        dbname = "opspilot"
 
-def run_migrations() -> None:
-    import urllib.parse
-
-    raw_url = os.environ.get("DATABASE_URL") or os.environ.get("DB_URL")
-    if not raw_url:
-        db_user = os.environ.get("DB_USER") or os.environ.get("POSTGRES_USER")
-        db_pass = os.environ.get("DB_PASSWORD") or os.environ.get("POSTGRES_PASSWORD")
-        db_host = os.environ.get("DB_HOST") or os.environ.get("POSTGRES_HOST", "127.0.0.1")
-        db_port = os.environ.get("DB_PORT") or os.environ.get("POSTGRES_PORT", "5432")
-        db_name = os.environ.get("DB_NAME") or os.environ.get("POSTGRES_DB", "opspilot")
-        if db_user and db_pass:
-            enc_user = urllib.parse.quote_plus(db_user)
-            enc_pass = urllib.parse.quote_plus(db_pass)
-            raw_url = f"postgresql://{enc_user}:{enc_pass}@{db_host}:{db_port}/{db_name}"
+    # Separate userinfo from hostinfo using rsplit on '@' from the right
+    user = "postgres"
+    password = ""
+    if "@" in remainder:
+        userinfo, hostinfo = remainder.rsplit("@", 1)
+        if ":" in userinfo:
+            user, password = userinfo.split(":", 1)
+            password = urllib.parse.unquote(password)
         else:
-            print("[-] Error: DATABASE_URL environment variable is required.")
-            sys.exit(1)
+            user = urllib.parse.unquote(userinfo)
+    else:
+        hostinfo = remainder
 
-    conninfo = _to_psycopg_conninfo(raw_url)
+    # Extract host and port
+    if ":" in hostinfo:
+        host, port_str = hostinfo.split(":", 1)
+        try:
+            port = int(port_str)
+        except ValueError:
+            port = 5432
+    else:
+        host = hostinfo or "127.0.0.1"
+        port = 5432
 
-    migrations_dir = Path(__file__).resolve().parent.parent / "db" / "migrations"
+    return {
+        "host": host,
+        "port": port,
+        "dbname": dbname or "opspilot",
+        "user": user,
+        "password": password,
+    }
+
+
+def get_db_connection_params(env: dict[str, str] | None = None) -> dict[str, Any]:
+    """
+    Resolve PostgreSQL connection parameters from environment variables as separate
+    keyword arguments (host, port, dbname, user, password) to avoid URI parsing issues
+    when credentials contain special characters such as '@'.
+    """
+    if env is None:
+        env = dict(os.environ)
+
+    # Check discrete environment variables first
+    db_user = env.get("DB_USER") or env.get("POSTGRES_USER")
+    db_pass = env.get("DB_PASSWORD") or env.get("POSTGRES_PASSWORD")
+    db_host = env.get("DB_HOST") or env.get("POSTGRES_HOST")
+    db_port = env.get("DB_PORT") or env.get("POSTGRES_PORT")
+    db_name = env.get("DB_NAME") or env.get("POSTGRES_DB")
+
+    raw_url = env.get("DATABASE_URL") or env.get("DB_URL")
+
+    # If discrete host or credentials are provided, return keyword arguments directly
+    if db_host or (db_user and db_pass):
+        return {
+            "host": db_host or "127.0.0.1",
+            "port": int(db_port) if db_port else 5432,
+            "dbname": db_name or "opspilot",
+            "user": db_user or "postgres",
+            "password": db_pass or "",
+        }
+
+    # If only DATABASE_URL / DB_URL is provided, safely parse components
+    if raw_url:
+        return parse_database_url(raw_url)
+
+    # Default fallback
+    return {
+        "host": db_host or "127.0.0.1",
+        "port": int(db_port) if db_port else 5432,
+        "dbname": db_name or "opspilot",
+        "user": db_user or "postgres",
+        "password": db_pass or "",
+    }
+
+
+def run_migrations(migrations_dir: Path | None = None) -> None:
+    conn_params = get_db_connection_params()
+
+    if migrations_dir is None:
+        migrations_dir = Path(__file__).resolve().parent.parent / "db" / "migrations"
 
     if not migrations_dir.exists():
-        print(f"[-] Migrations directory not found at: {migrations_dir}")
-        sys.exit(1)
+        alt_dir = Path("/app/db/migrations")
+        if alt_dir.exists():
+            migrations_dir = alt_dir
+        else:
+            print(f"[-] Migrations directory not found at: {migrations_dir}")
+            sys.exit(1)
 
     migration_files = sorted(migrations_dir.glob("*.sql"), key=lambda p: p.name)
     print(f"[*] Found {len(migration_files)} migration file(s) in {migrations_dir}")
 
-    print("[*] Connecting to database...")
-    with psycopg.connect(conninfo, autocommit=True) as conn:
+    host = conn_params["host"]
+    port = conn_params["port"]
+    dbname = conn_params["dbname"]
+    user = conn_params["user"]
+    password = conn_params.get("password", "")
+
+    print(f"[*] Connecting to database at {host}:{port}/{dbname} as user '{user}'...")
+
+    with psycopg.connect(
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password,
+        autocommit=True,
+    ) as conn:
         with conn.cursor() as cur:
             # Ensure tracking schema and table exist
             try:
