@@ -67,7 +67,9 @@ jobs:
           import os
           import psycopg
 
-          with psycopg.connect(os.environ["DATABASE_URL"]) as connection:
+          raw_url = os.environ["DATABASE_URL"]
+          conninfo = raw_url.replace("postgresql+psycopg://", "postgresql://")
+          with psycopg.connect(conninfo) as connection:
               with connection.cursor() as cursor:
                   cursor.execute("SELECT current_user, current_database()")
                   print("Connected to PostgreSQL successfully:", cursor.fetchone())
