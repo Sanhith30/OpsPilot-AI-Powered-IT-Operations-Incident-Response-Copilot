@@ -14,6 +14,14 @@ jobs:
     name: Backend Test Suite
     runs-on: ubuntu-latest
 
+    env:
+      DB_NAME: opspilot
+      DB_USER: postgres
+      DB_PASSWORD: postgrespassword
+      DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@127.0.0.1:5432/opspilot
+      JWT_SECRET_KEY: test_secret_key_32_bytes_long_ci_pipeline
+      APP_ENV: testing
+
     services:
       postgres:
         image: postgres:15-alpine
@@ -24,10 +32,10 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="pg_isready -U postgres -d opspilot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
 
     steps:
       - name: Checkout Code
@@ -53,17 +61,22 @@ jobs:
         run: |
           bandit -r backend/app -ll -ii
 
-      - name: Apply Database Schema Migrations
-        env:
-          DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@localhost:5432/opspilot
+      - name: Verify PostgreSQL connection
         run: |
-          python scripts/run_migrations.py
+          python - <<'PY'
+          import os
+          import psycopg
+
+          with psycopg.connect(os.environ["DATABASE_URL"]) as connection:
+              with connection.cursor() as cursor:
+                  cursor.execute("SELECT current_user, current_database()")
+                  print("Connected to PostgreSQL successfully:", cursor.fetchone())
+          PY
+
+      - name: Apply Database Schema Migrations
+        run: python scripts/run_migrations.py
 
       - name: Run Full Pytest Regression Suite
-        env:
-          DATABASE_URL: postgresql+psycopg://postgres:postgrespassword@localhost:5432/opspilot
-          JWT_SECRET_KEY: test_secret_key_32_bytes_long_ci_pipeline
-          APP_ENV: testing
         run: |
           cd backend
           pytest -v --tb=short

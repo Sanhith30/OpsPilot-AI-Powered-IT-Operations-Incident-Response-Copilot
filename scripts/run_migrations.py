@@ -36,10 +36,18 @@ def _to_psycopg_conninfo(database_url: str) -> str:
 
 
 def run_migrations() -> None:
-    raw_url = os.environ.get("DATABASE_URL")
+    raw_url = os.environ.get("DATABASE_URL") or os.environ.get("DB_URL")
     if not raw_url:
-        print("[-] Error: DATABASE_URL environment variable is required.")
-        sys.exit(1)
+        db_user = os.environ.get("DB_USER") or os.environ.get("POSTGRES_USER")
+        db_pass = os.environ.get("DB_PASSWORD") or os.environ.get("POSTGRES_PASSWORD")
+        db_host = os.environ.get("DB_HOST") or os.environ.get("POSTGRES_HOST", "127.0.0.1")
+        db_port = os.environ.get("DB_PORT") or os.environ.get("POSTGRES_PORT", "5432")
+        db_name = os.environ.get("DB_NAME") or os.environ.get("POSTGRES_DB", "opspilot")
+        if db_user and db_pass:
+            raw_url = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+        else:
+            print("[-] Error: DATABASE_URL environment variable is required.")
+            sys.exit(1)
 
     conninfo = _to_psycopg_conninfo(raw_url)
 

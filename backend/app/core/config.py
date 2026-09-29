@@ -1,3 +1,4 @@
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,12 +8,12 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     # Database
-    db_host: str = "localhost"
-    db_port: int = 5432
-    db_name: str = "opspilot"
-    db_user: str = "postgres"
-    db_password: str = "postgres"
-    database_url: str | None = None
+    db_host: str = Field(default="localhost", validation_alias=AliasChoices("db_host", "postgres_host"))
+    db_port: int = Field(default=5432, validation_alias=AliasChoices("db_port", "postgres_port"))
+    db_name: str = Field(default="opspilot", validation_alias=AliasChoices("db_name", "postgres_db"))
+    db_user: str = Field(default="postgres", validation_alias=AliasChoices("db_user", "postgres_user"))
+    db_password: str = Field(default="postgres", validation_alias=AliasChoices("db_password", "postgres_password"))
+    database_url: str | None = Field(default=None, validation_alias=AliasChoices("database_url", "db_url"))
 
     # Auth
     jwt_secret_key: str = "insecure_default_jwt_secret_key_32_bytes_long"
