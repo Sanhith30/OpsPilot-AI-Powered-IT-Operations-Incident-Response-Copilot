@@ -1,10 +1,17 @@
 from app.ai.rag.embeddings.base import EmbeddingProvider
 from app.ai.rag.embeddings.gemini import GeminiEmbeddingProvider
+from app.ai.rag.embeddings.mock import MockEmbeddingProvider
 from app.core.config import settings
 
 
 def create_embedding_provider() -> EmbeddingProvider:
     provider = settings.embedding_provider.lower()
+
+    if provider in ("mock", "test"):
+        return MockEmbeddingProvider(
+            dimension=settings.embedding_dimensions,
+            model=settings.embedding_model or "mock-embedding",
+        )
 
     if provider == "gemini":
         if not settings.gemini_api_key:

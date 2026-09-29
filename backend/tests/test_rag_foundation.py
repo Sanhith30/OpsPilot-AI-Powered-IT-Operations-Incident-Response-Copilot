@@ -174,3 +174,12 @@ def test_factories(monkeypatch):
         monkeypatch.setattr("app.core.config.settings.pinecone_api_key", "test-pinecone-key")
         store = create_vector_store()
         assert isinstance(store, VectorStore)
+
+    monkeypatch.setattr("app.core.config.settings.embedding_provider", "mock")
+    monkeypatch.setattr("app.core.config.settings.embedding_dimensions", 768)
+    mock_provider = create_embedding_provider()
+    from app.ai.rag.embeddings.mock import MockEmbeddingProvider
+    assert isinstance(mock_provider, MockEmbeddingProvider)
+    assert mock_provider.dimension == 768
+    vec = mock_provider.embed_query("test query")
+    assert len(vec) == 768
