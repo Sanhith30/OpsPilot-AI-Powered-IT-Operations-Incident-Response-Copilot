@@ -40,7 +40,7 @@ OpsPilot is actively deployed on **AWS EC2** in `ap-south-1` (Mumbai) running a 
 | **Meena Rao** | Operations Admin | `meena@opspilot.local` | `OpsPilot@123` | Role management, user access, full system oversight |
 
 ---
-
+[![Architecture diagram of sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot](https://gitdiagram.com/sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot/diagram.png)](https://gitdiagram.com/sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot?utm_source=readme&utm_medium=picture)
 
 ## Table of Contents
 
