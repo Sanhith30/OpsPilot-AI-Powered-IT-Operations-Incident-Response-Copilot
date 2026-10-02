@@ -41,7 +41,7 @@ OpsPilot is actively deployed on **AWS EC2** in `ap-south-1` (Mumbai) running a 
 
 ---
 [![Architecture diagram of sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot](https://gitdiagram.com/sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot/diagram.png)](https://gitdiagram.com/sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot?utm_source=readme&utm_medium=picture)
-
+[![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/sanhith30/opspilot-ai-powered-it-operations-incident-response-copilot?utm_source=readme&utm_medium=badge)
 ## Table of Contents
 
 - [1. Project Overview](#1-project-overview)
